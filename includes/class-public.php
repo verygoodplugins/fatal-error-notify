@@ -14,41 +14,14 @@ class Fatal_Error_Notify_Public {
 
 	}
 
-	public function map_error_code_to_type( $code ) {
+	/**
+	 * Send notifications with HTML formatting
+	 *
+	 * @return string
+	*/
 
-		switch($code) { 
-		    case E_ERROR: // 1 // 
-		        return 'E_ERROR'; 
-		    case E_WARNING: // 2 // 
-		        return 'E_WARNING'; 
-		    case E_PARSE: // 4 // 
-		        return 'E_PARSE'; 
-		    case E_NOTICE: // 8 // 
-		        return 'E_NOTICE'; 
-		    case E_CORE_ERROR: // 16 // 
-		        return 'E_CORE_ERROR'; 
-		    case E_CORE_WARNING: // 32 // 
-		        return 'E_CORE_WARNING'; 
-		    case E_COMPILE_ERROR: // 64 // 
-		        return 'E_COMPILE_ERROR'; 
-		    case E_COMPILE_WARNING: // 128 // 
-		        return 'E_COMPILE_WARNING'; 
-		    case E_USER_ERROR: // 256 // 
-		        return 'E_USER_ERROR'; 
-		    case E_USER_WARNING: // 512 // 
-		        return 'E_USER_WARNING'; 
-		    case E_USER_NOTICE: // 1024 // 
-		        return 'E_USER_NOTICE'; 
-		    case E_STRICT: // 2048 // 
-		        return 'E_STRICT'; 
-		    case E_RECOVERABLE_ERROR: // 4096 // 
-		        return 'E_RECOVERABLE_ERROR'; 
-		    case E_DEPRECATED: // 8192 // 
-		        return 'E_DEPRECATED'; 
-		    case E_USER_DEPRECATED: // 16384 // 
-		        return 'E_USER_DEPRECATED'; 
-		} 
-
+	public function wp_mail_content_type() {
+		return "text/html";
 	}
 
 	/**
@@ -61,13 +34,49 @@ class Fatal_Error_Notify_Public {
 
 		$error = error_get_last();
 
-		if ($error['type'] === E_ERROR) {
-		    error_log('FATAL ERROR:');
-		} else {
-			error_log('Non-fatal error of type: ' . $this->map_error_code_to_type( $error['type'] ));
+		if( is_null( $error ) ) {
+			return;
 		}
 
-		error_log(print_r($error, true));
+		$settings = get_option( 'vgp_fen_settings', array() );
+
+		if( empty( $settings ) || empty( $settings['notification_email'] ) || empty( $settings['levels'] ) ) {
+			return;
+		}
+
+		$output = '';
+
+		foreach( $settings['levels'] as $level_id => $enabled ) {
+
+			if ( $error['type'] == $level_id ) {
+				$output .= '<ul>';
+				$output .= '<li><strong>Error Level:</strong> ' . fatal_error_notify()->map_error_code_to_type( $error['type'] ) . '</li>';
+				$output .= '<li><strong>Message:</strong> ' . $error['message'] . '</li>';
+				$output .= '<li><strong>File:</strong> ' . $error['file'] . '</li>';
+				$output .= '<li><strong>Line:</strong> ' . $error['line'] . '</li>';
+				$output .= '</ul><br /><br />';
+			}
+
+		}
+
+		if( !empty( $output ) ) {
+
+			$output = '<h2>Error notification</h2><br/>For site <a href="' . get_home_url() . '" target="_blank">' . get_home_url() . '</a><br /><br />' . $output;
+
+			if( function_exists( 'wp_mail' ) ) {
+
+				add_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
+				wp_mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output );
+
+			} else {
+
+				$headers = "MIME-Version: 1.0" . "\r\n";
+				$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+				mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output, $headers );
+
+			}
+
+		}
 
 	}
 

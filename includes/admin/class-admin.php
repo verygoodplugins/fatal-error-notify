@@ -2,6 +2,26 @@
 
 class Fatal_Error_Notify_Admin {
 
+	// Define available error levels for reporting
+
+	private $error_levels = array(
+		E_ERROR,
+		E_WARNING,
+		E_PARSE,
+		E_NOTICE,
+		E_CORE_ERROR,
+		E_CORE_WARNING,
+		E_COMPILE_ERROR,
+		E_COMPILE_WARNING,
+		E_USER_ERROR,
+		E_USER_WARNING,
+		E_USER_NOTICE,
+		E_STRICT,
+		E_RECOVERABLE_ERROR,
+		E_DEPRECATED,
+		E_USER_DEPRECATED
+	);
+
 	/**
 	 * Get things started
 	 *
@@ -12,112 +32,112 @@ class Fatal_Error_Notify_Admin {
 	public function __construct() {
 
 		add_action( 'admin_menu', array( $this, 'admin_menu') );
-		add_action( 'admin_init', array( $this, 'register_settings') );
 
 	}
 
-	public function register_settings() {
-
-		add_settings_section( 'reading_speed_options_fields', 'All Settings', null, 'reading_speed_options');
-
-		// Default WPM
-		add_settings_field( 'reading_speed_default', 'Default', array($this, 'display_reading_speed_default'), 'reading_speed_options', 'reading_speed_options_fields');
-	    register_setting( 'reading_speed_options_fields', 'reading_speed_default');
-
-	    // Secton 1 header
-		add_settings_field( 'reading_speed_header_one', 'Heading 1', array($this, 'display_reading_speed_header_one'), 'reading_speed_options', 'reading_speed_options_fields');
-	    register_setting( 'reading_speed_options_fields', 'reading_speed_header_one');
-
-	    // Secton 2 header
-		add_settings_field( 'reading_speed_header_two', 'Heading 2', array($this, 'display_reading_speed_header_two'), 'reading_speed_options', 'reading_speed_options_fields');
-	    register_setting( 'reading_speed_options_fields', 'reading_speed_header_two');
-
-	    // Placeholder
-		add_settings_field( 'reading_speed_placeholder', 'Placeholder', array($this, 'display_reading_speed_placeholder'), 'reading_speed_options', 'reading_speed_options_fields');
-	    register_setting( 'reading_speed_options_fields', 'reading_speed_placeholder');
-
-	    // Secton 3 header
-		add_settings_field( 'reading_speed_header_three', 'Heading 3', array($this, 'display_reading_speed_header_three'), 'reading_speed_options', 'reading_speed_options_fields');
-	    register_setting( 'reading_speed_options_fields', 'reading_speed_header_three');
-
-	    // Secton 4 header
-		add_settings_field( 'reading_speed_header_four', 'Heading 4', array($this, 'display_reading_speed_header_four'), 'reading_speed_options', 'reading_speed_options_fields');
-	    register_setting( 'reading_speed_options_fields', 'reading_speed_header_four');
-
-	}
+	/**
+	 * Register admin settings menu
+	 *
+	 * @since 1.0
+	 * @return void
+	*/
 
 	public function admin_menu() {
 
 		add_options_page(
-			'Reading Speed Settings',
-			'Reading Speed',
+			'Fatal Error Notification Settings',
+			'Fatal Error Notify',
 			'manage_options',
-			'reading_speed',
+			'fatal_error_notify',
 			array( $this, 'settings_page' )
 		);
 
 	}
 
-	public function display_reading_speed_default() { ?>
-        <p>
-            <input type="number" name="reading_speed_default" size="45" value="<?php echo get_option('reading_speed_default'); ?>" />
-        </p>
-	   <?php
-	}
+	/**
+	 * Renders Settings page
+	 *
+	 * @access public
+	 * @return mixed
+	 */
 
-	public function display_reading_speed_header_one() { ?>
-        <p>
-        	<textarea style="width: 400px; height: 100px;" name="reading_speed_header_one"><?php echo get_option('reading_speed_header_one'); ?></textarea>
-        </p>
-	   <?php
-	}
+	public function settings_page() {
 
-	public function display_reading_speed_header_two() { ?>
-        <p>
-        	<textarea style="width: 400px; height: 100px;" name="reading_speed_header_two"><?php echo get_option('reading_speed_header_two'); ?></textarea>
-        </p>
-	   <?php
-	}
+		// Save settings
 
-	public function display_reading_speed_placeholder() { ?>
-        <p>
-        	<textarea style="width: 400px; height: 100px;" name="reading_speed_placeholder"><?php echo get_option('reading_speed_placeholder'); ?></textarea>
-        </p>
-	   <?php
-	}
+		if ( isset( $_POST['fen_settings_nonce'] ) && wp_verify_nonce( $_POST['fen_settings_nonce'], 'fen_settings' ) ) {
+			update_option( 'vgp_fen_settings', $_POST['fen_settings'] );
+			echo '<div id="message" class="updated fade"><p><strong>Settings saved.</strong></p></div>';
+		}
 
-	public function display_reading_speed_header_three() { ?>
-        <p>
-        	<textarea style="width: 400px; height: 100px;" name="reading_speed_header_three"><?php echo get_option('reading_speed_header_three'); ?></textarea>
-        </p>
-	   <?php
-	}
+		$settings = get_option( 'vgp_fen_settings', array() );
 
-	public function display_reading_speed_header_four() { ?>
-        <p>
-        	<textarea style="width: 400px; height: 100px;" name="reading_speed_header_four"><?php echo get_option('reading_speed_header_four'); ?></textarea>
-        </p>
-	   <?php
-	}
+		if( empty( $settings ) ) {
 
+			$settings = array(
+				'notification_email'	=> get_option('admin_email'),
+				'levels'				=> array()
+			);
 
-	public function settings_page() { 
+			foreach( $this->error_levels as $level_id ) {
+
+				// Enable fatal error by default
+				if( $level_id == 1 ) {
+					$settings['levels'][$level_id] = true;
+				} else {
+					$settings['levels'][$level_id] = false;
+				}
+		
+			}
+
+		}
 
 		?>
 
 		<div class="wrap">
-	        <h2>Reading Speed Shortcode Options</h2>
+			<h2>Fatal Error Notification Settings</h2>
 
-	        <form method="post" action="options.php">
+			<form id="fen-settings" action="" method="post">
+				<?php wp_nonce_field( 'fen_settings', 'fen_settings_nonce' ); ?>
+				<input type="hidden" name="action" value="update">
 
-				<?php settings_fields('reading_speed_options_fields'); ?>
-	            <?php do_settings_sections('reading_speed_options'); ?>
-	            <?php submit_button(); ?>
-	            
-	        </form>
-	    </div>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row">Notification Email</th>
+						<td>
+							<input class="regular-text" type="email" name="fen_settings[notification_email]" value="<?php echo esc_attr( $settings['notification_email'] ); ?>" />
+							<p class="description">Configured error notifications will be sent to this address.</p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">Error Levels To Notify</th>
+						<td>
+							<fieldset>
+								<?php foreach( $this->error_levels as $i => $level_id ) : ?>
 
-	    <?php 
+									<?php $level_string = fatal_error_notify()->map_error_code_to_type( $level_id ); ?>
+									<label for="level_<?php echo $level_string ?>">
+										<input type="checkbox" name="fen_settings[levels][<?php echo $level_id; ?>]" id="level_<?php echo $level_string ?>" value="1" <?php checked( $settings['levels'][$level_id] ); ?> />
+										<?php echo $level_string; ?>
+									</label>
+									<br />
+
+								<?php endforeach; ?>
+							</fieldset>
+
+						</td>
+
+				</table>
+
+	            <p class="submit">
+	            	<input name="Submit" type="submit" class="button-primary" value="Save Changes"/>
+	            </p>
+
+			</form>
+
+        </div>
+
+		<?php 
 	}
 
 
