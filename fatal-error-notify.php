@@ -4,11 +4,10 @@
 Plugin Name: Fatal Error Notify
 Description: Receive email notifications when fatal errors occur on your WordPress site
 Plugin URI: https://verygoodplugins.com/
-Version: 0.1
+Version: 1.1
 Author: Very Good Plugins
 Author URI: http://verygoodplugins.com/
 Text Domain: fatal-error-notify
-
 */
 
 /**
@@ -37,154 +36,157 @@ if(!function_exists('add_action')) {
 	exit();
 }
 
-define( 'FATAL_ERROR_NOTIFY_VERSION', '0.1' );
+define( 'FATAL_ERROR_NOTIFY_VERSION', '1.1' );
 
-final class Fatal_Error_Notify {
+if( ! class_exists( 'Fatal_Error_Notify' ) ) {
 
-	/** Singleton *************************************************************/
+	final class Fatal_Error_Notify {
 
-	/**
-	 * @var Fatal_Error_Notify The one true Fatal_Error_Notify
-	 * @since 1.0
-	 */
-	private static $instance;
+		/** Singleton *************************************************************/
+
+		/**
+		 * @var Fatal_Error_Notify The one true Fatal_Error_Notify
+		 * @since 1.0
+		 */
+		private static $instance;
 
 
-	/**
-	 * Main Fatal_Error_Notify Instance
-	 *
-	 * Insures that only one instance of Fatal_Error_Notify exists in memory at any one
-	 * time. Also prevents needing to define globals all over the place.
-	 *
-	 * @since 1.0
-	 * @static
-	 * @staticvar array $instance
-	 * @return The one true Fatal_Error_Notify
-	 */
+		/**
+		 * Main Fatal_Error_Notify Instance
+		 *
+		 * Insures that only one instance of Fatal_Error_Notify exists in memory at any one
+		 * time. Also prevents needing to define globals all over the place.
+		 *
+		 * @since 1.0
+		 * @static
+		 * @staticvar array $instance
+		 * @return The one true Fatal_Error_Notify
+		 */
 
-	public static function instance() {
+		public static function instance() {
 
-		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Fatal_Error_Notify ) ) {
+			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Fatal_Error_Notify ) ) {
 
-			self::$instance = new Fatal_Error_Notify;
-			self::$instance->setup_constants();
-			self::$instance->includes();
+				self::$instance = new Fatal_Error_Notify;
+				self::$instance->setup_constants();
+				self::$instance->includes();
+
+			}
+
+			return self::$instance;
+		}
+
+		/**
+		 * Throw error on object clone
+		 *
+		 * The whole idea of the singleton design pattern is that there is a single
+		 * object therefore, we don't want the object to be cloned.
+		 *
+		 * @access protected
+		 * @return void
+		 */
+
+		public function __clone() {
+			// Cloning instances of the class is forbidden
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'fatal-error-notify' ), '1.0' );
+		}
+
+		/**
+		 * Disable unserializing of the class
+		 *
+		 * @access protected
+		 * @return void
+		 */
+
+		public function __wakeup() {
+			// Unserializing instances of the class is forbidden
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'fatal-error-notify' ), '1.0' );
+		}
+
+		/**
+		 * Setup plugin constants
+		 *
+		 * @access private
+		 * @return void
+		 */
+
+		private function setup_constants() {
+
+			if(!defined('FATAL_ERROR_NOTIFY_DIR_PATH')) {
+				define('FATAL_ERROR_NOTIFY_DIR_PATH', plugin_dir_path(__FILE__));
+			}
+
+			if(!defined('FATAL_ERROR_NOTIFY_PLUGIN_PATH')) {
+				define('FATAL_ERROR_NOTIFY_PLUGIN_PATH', plugin_basename(__FILE__));
+			}
+
+			if(!defined('FATAL_ERROR_NOTIFY_DIR_URL')) {
+				define('FATAL_ERROR_NOTIFY_DIR_URL', plugin_dir_url(__FILE__));
+			}
 
 		}
 
-		return self::$instance;
-	}
+		/**
+		 * Include required files
+		 *
+		 * @access private
+		 * @return void
+		 */
 
-	/**
-	 * Throw error on object clone
-	 *
-	 * The whole idea of the singleton design pattern is that there is a single
-	 * object therefore, we don't want the object to be cloned.
-	 *
-	 * @access protected
-	 * @return void
-	 */
+		private function includes() {
 
-	public function __clone() {
-		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'fatal-error-notify' ), '1.0' );
-	}
+			require_once FATAL_ERROR_NOTIFY_DIR_PATH .'includes/admin/class-admin.php';
+			require_once FATAL_ERROR_NOTIFY_DIR_PATH .'includes/class-public.php';
 
-	/**
-	 * Disable unserializing of the class
-	 *
-	 * @access protected
-	 * @return void
-	 */
-
-	public function __wakeup() {
-		// Unserializing instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'fatal-error-notify' ), '1.0' );
-	}
-
-	/**
-	 * Setup plugin constants
-	 *
-	 * @access private
-	 * @return void
-	 */
-
-	private function setup_constants() {
-
-		if(!defined('FATAL_ERROR_NOTIFY_DIR_PATH')) {
-			define('FATAL_ERROR_NOTIFY_DIR_PATH', plugin_dir_path(__FILE__));
 		}
 
-		if(!defined('FATAL_ERROR_NOTIFY_PLUGIN_PATH')) {
-			define('FATAL_ERROR_NOTIFY_PLUGIN_PATH', plugin_basename(__FILE__));
+		/**
+		 * Map error code to error string
+		 *
+		 * @return void
+		*/
+
+		public function map_error_code_to_type( $code ) {
+
+			switch($code) { 
+			    case E_ERROR: // 1 // 
+			        return 'E_ERROR'; 
+			    case E_WARNING: // 2 // 
+			        return 'E_WARNING'; 
+			    case E_PARSE: // 4 // 
+			        return 'E_PARSE'; 
+			    case E_NOTICE: // 8 // 
+			        return 'E_NOTICE'; 
+			    case E_CORE_ERROR: // 16 // 
+			        return 'E_CORE_ERROR'; 
+			    case E_CORE_WARNING: // 32 // 
+			        return 'E_CORE_WARNING'; 
+			    case E_COMPILE_ERROR: // 64 // 
+			        return 'E_COMPILE_ERROR'; 
+			    case E_COMPILE_WARNING: // 128 // 
+			        return 'E_COMPILE_WARNING'; 
+			    case E_USER_ERROR: // 256 // 
+			        return 'E_USER_ERROR'; 
+			    case E_USER_WARNING: // 512 // 
+			        return 'E_USER_WARNING'; 
+			    case E_USER_NOTICE: // 1024 // 
+			        return 'E_USER_NOTICE'; 
+			    case E_STRICT: // 2048 // 
+			        return 'E_STRICT'; 
+			    case E_RECOVERABLE_ERROR: // 4096 // 
+			        return 'E_RECOVERABLE_ERROR'; 
+			    case E_DEPRECATED: // 8192 // 
+			        return 'E_DEPRECATED'; 
+			    case E_USER_DEPRECATED: // 16384 // 
+			        return 'E_USER_DEPRECATED'; 
+			} 
+
 		}
 
-		if(!defined('FATAL_ERROR_NOTIFY_DIR_URL')) {
-			define('FATAL_ERROR_NOTIFY_DIR_URL', plugin_dir_url(__FILE__));
-		}
 
 	}
-
-	/**
-	 * Include required files
-	 *
-	 * @access private
-	 * @return void
-	 */
-
-	private function includes() {
-
-		require_once FATAL_ERROR_NOTIFY_DIR_PATH .'includes/admin/class-admin.php';
-		require_once FATAL_ERROR_NOTIFY_DIR_PATH .'includes/class-public.php';
-
-	}
-
-	/**
-	 * Map error code to error string
-	 *
-	 * @return void
-	*/
-
-	public function map_error_code_to_type( $code ) {
-
-		switch($code) { 
-		    case E_ERROR: // 1 // 
-		        return 'E_ERROR'; 
-		    case E_WARNING: // 2 // 
-		        return 'E_WARNING'; 
-		    case E_PARSE: // 4 // 
-		        return 'E_PARSE'; 
-		    case E_NOTICE: // 8 // 
-		        return 'E_NOTICE'; 
-		    case E_CORE_ERROR: // 16 // 
-		        return 'E_CORE_ERROR'; 
-		    case E_CORE_WARNING: // 32 // 
-		        return 'E_CORE_WARNING'; 
-		    case E_COMPILE_ERROR: // 64 // 
-		        return 'E_COMPILE_ERROR'; 
-		    case E_COMPILE_WARNING: // 128 // 
-		        return 'E_COMPILE_WARNING'; 
-		    case E_USER_ERROR: // 256 // 
-		        return 'E_USER_ERROR'; 
-		    case E_USER_WARNING: // 512 // 
-		        return 'E_USER_WARNING'; 
-		    case E_USER_NOTICE: // 1024 // 
-		        return 'E_USER_NOTICE'; 
-		    case E_STRICT: // 2048 // 
-		        return 'E_STRICT'; 
-		    case E_RECOVERABLE_ERROR: // 4096 // 
-		        return 'E_RECOVERABLE_ERROR'; 
-		    case E_DEPRECATED: // 8192 // 
-		        return 'E_DEPRECATED'; 
-		    case E_USER_DEPRECATED: // 16384 // 
-		        return 'E_USER_DEPRECATED'; 
-		} 
-
-	}
-
 
 }
-
 
 /**
  * The main function responsible for returning the one true Fatal Error Notify

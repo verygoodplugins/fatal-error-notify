@@ -1,0 +1,35 @@
+
+#fen-pro {
+	position: absolute;
+    right: 30px;
+    top: 30px;
+    background: #fff;
+    padding: 15px 30px 25px;
+    box-shadow: 0px 1px 5px rgba(0,0,0,0.25);
+}
+
+#fen-pro #fen-pro-top {
+	margin-top: -15px;
+	margin-left: -30px;
+	margin-right: -30px;
+	padding: 15px 30px;
+    background-color: #F15D58;
+}
+
+#fen-pro img {
+	width: 300px;
+}
+
+#fen-pro ul {
+	list-style: initial;
+	padding-left: 30px;
+}
+
+#fen-pro a {
+	margin-left: 15px;
+	margin-top: 5px;
+	background-color: #e2665e;
+	border-color: #cc4d3e;
+	box-shadow: 0 1px 0 #cc4d3e;
+	text-shadow: 0 -1px 1px #cc4d3e, 1px 0 1px #cc4d3e, 0 1px 1px #cc4d3e, -1px 0 1px #cc4d3e;
+}

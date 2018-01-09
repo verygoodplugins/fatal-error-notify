@@ -61,7 +61,7 @@ class Fatal_Error_Notify_Public {
 
 		if( !empty( $output ) ) {
 
-			$output = '<h2>Error notification</h2><br/>For site <a href="' . get_home_url() . '" target="_blank">' . get_home_url() . '</a><br /><br />' . $output;
+			$output = '<h2>Error notification</h2>For site <a href="' . get_home_url() . '" target="_blank">' . get_home_url() . '</a><br />' . $output;
 
 			if( function_exists( 'wp_mail' ) ) {
 

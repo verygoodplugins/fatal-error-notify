@@ -44,13 +44,28 @@ class Fatal_Error_Notify_Admin {
 
 	public function admin_menu() {
 
-		add_options_page(
+		$id = add_options_page(
 			'Fatal Error Notification Settings',
 			'Fatal Error Notify',
 			'manage_options',
 			'fatal_error_notify',
 			array( $this, 'settings_page' )
 		);
+
+		add_action( 'load-' . $id, array( $this, 'enqueue_scripts' ) );
+
+	}
+
+	/**
+	 * Register CSS files
+	 *
+	 * @since 1.0
+	 * @return void
+	*/
+
+	public function enqueue_scripts(){
+
+    	wp_enqueue_style( 'fatal-error-notify', FATAL_ERROR_NOTIFY_DIR_URL . 'assets/admin.css' );
 
 	}
 
@@ -95,7 +110,24 @@ class Fatal_Error_Notify_Admin {
 		?>
 
 		<div class="wrap">
-			<h2>Fatal Error Notification Settings</h2>
+
+			<div id="fen-pro">
+				<div id="fen-pro-top">
+					<img src="<?php echo FATAL_ERROR_NOTIFY_DIR_URL ?>assets/pro-promo.png" />
+				</div>
+
+				<ul>
+					<li>Slack notifications</li>
+					<li>Stealth mode</li>
+					<li>Auto-deactivate</li>
+					<li>Logging</li>
+				</ul>
+
+				<a class="button-primary" href="https://fatalerrornotify.com/?utm_source=free-plugin" target="_blank">Learn More</a>
+
+			</div>
+
+			<h2>Error Notification Settings</h2>
 
 			<form id="fen-settings" action="" method="post">
 				<?php wp_nonce_field( 'fen_settings', 'fen_settings_nonce' ); ?>
