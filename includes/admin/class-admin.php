@@ -120,6 +120,7 @@ class Fatal_Error_Notify_Admin {
 					<li>Slack notifications</li>
 					<li>Stealth mode</li>
 					<li>Auto-deactivate</li>
+					<li>Out-of-memory handling</li>
 					<li>Logging</li>
 				</ul>
 

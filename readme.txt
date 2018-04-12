@@ -2,8 +2,8 @@
 Contributors: verygoodplugins
 Tags: error, reporting, debugging
 Requires at least: 4.6
-Tested up to: 4.9.1
-Stable tag: 1.1
+Tested up to: 4.9.4
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,7 +37,30 @@ Even the dreaded "500 - Internal Server Error" still triggers PHP's shutdown act
 
 = What's in the Pro version =
 
-[Fatal Error Notify Pro](https://fatalerrornotify.com/) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, and more.
+[Fatal Error Notify Pro](https://fatalerrornotify.com/) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, out of memory handling, and more.
+
+= Can I exclude specific errors? =
+
+Yes, you can use the filter `fen_ingore_error`, like so:
+
+	function fen_ignore_error( $ignore, $error ) {
+
+		if( $error['file'] == '/home/username/public_html/wp-includes/class-phpass.php' ) {
+			$ignore = true;
+		}
+
+		return $ignore;
+
+	}
+
+	add_filter( 'fen_ignore_error', 'fen_ignore_error', 10, 2 );
+
+The `$error` variable is an array containing:
+
+* `$error['type']`: (int) The PHP [error code](http://php.net/manual/en/errorfunc.constants.php)
+* `$error['message']`: (string) The error message
+* `$error['file']`: (string) The path to the file that triggered the error
+* `$error['line']`: (int) The line number that triggered the error
 
 == Screenshots ==
 
@@ -46,9 +69,12 @@ Even the dreaded "500 - Internal Server Error" still triggers PHP's shutdown act
 
 == Changelog ==
 
-= 1.0 =
-* Initial release
+= 1.2 =
+* Added filter to ignore errors
 
 = 1.1 =
 * Updated branding
 * Added link to Pro version
+
+= 1.0 =
+* Initial release

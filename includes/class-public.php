@@ -38,6 +38,13 @@ class Fatal_Error_Notify_Public {
 			return;
 		}
 
+		// Allow bypassing
+		$ignore = apply_filters( 'fen_ignore_error', false, $error );
+
+		if( $ignore ) {
+			return;
+		}
+
 		$settings = get_option( 'vgp_fen_settings', array() );
 
 		if( empty( $settings ) || empty( $settings['notification_email'] ) || empty( $settings['levels'] ) ) {

@@ -4,9 +4,9 @@
 Plugin Name: Fatal Error Notify
 Description: Receive email notifications when fatal errors occur on your WordPress site
 Plugin URI: https://verygoodplugins.com/
-Version: 1.1
+Version: 1.2
 Author: Very Good Plugins
-Author URI: http://verygoodplugins.com/
+Author URI: https://verygoodplugins.com/
 Text Domain: fatal-error-notify
 */
 
@@ -36,7 +36,7 @@ if(!function_exists('add_action')) {
 	exit();
 }
 
-define( 'FATAL_ERROR_NOTIFY_VERSION', '1.1' );
+define( 'FATAL_ERROR_NOTIFY_VERSION', '1.2' );
 
 if( ! class_exists( 'Fatal_Error_Notify' ) ) {
 
