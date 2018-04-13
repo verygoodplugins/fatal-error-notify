@@ -1,11 +1,12 @@
 
 #fen-pro {
-	position: absolute;
-    right: 30px;
-    top: 30px;
+	position:fixed;
+	right:30px;
+	margin-top:0px;
     background: #fff;
     padding: 15px 30px 25px;
     box-shadow: 0px 1px 5px rgba(0,0,0,0.25);
+    z-index: 999;
 }
 
 #fen-pro #fen-pro-top {
@@ -33,3 +34,26 @@
 	box-shadow: 0 1px 0 #cc4d3e;
 	text-shadow: 0 -1px 1px #cc4d3e, 1px 0 1px #cc4d3e, 0 1px 1px #cc4d3e, -1px 0 1px #cc4d3e;
 }
+/*
+#test-button {
+	background: #db1818;
+    border-color: #bc1212 #b73131 #b73131;
+    color: #fff;
+    box-shadow: 0 1px 0 #ad5d1e;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 26px;
+    height: 28px;
+    margin: 0;
+    padding: 0 10px 1px;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-appearance: none;
+    border-radius: 3px;
+    white-space: nowrap;
+    box-sizing: border-box;
+}*/
+
+

@@ -32,7 +32,9 @@ class Fatal_Error_Notify_Admin {
 	public function __construct() {
 
 		add_action( 'admin_menu', array( $this, 'admin_menu') );
-
+		add_action('wp_ajax_test_error', array( $this, 'test_error' ) );
+		add_action('wp_ajax_create_error', array( $this, 'create_error' ) );
+		//add_action('wp_ajax_nopriv_test_error', 'test_error');
 	}
 
 	/**
@@ -66,6 +68,8 @@ class Fatal_Error_Notify_Admin {
 	public function enqueue_scripts(){
 
     	wp_enqueue_style( 'fatal-error-notify', FATAL_ERROR_NOTIFY_DIR_URL . 'assets/admin.css' );
+    	wp_enqueue_script( 'test_error', FATAL_ERROR_NOTIFY_DIR_URL . "assets/admin.js", array('jquery'), time());
+		wp_localize_script( 'test_error', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 
 	}
 
@@ -111,22 +115,6 @@ class Fatal_Error_Notify_Admin {
 
 		<div class="wrap">
 
-			<div id="fen-pro">
-				<div id="fen-pro-top">
-					<img src="<?php echo FATAL_ERROR_NOTIFY_DIR_URL ?>assets/pro-promo.png" />
-				</div>
-
-				<ul>
-					<li>Slack notifications</li>
-					<li>Stealth mode</li>
-					<li>Auto-deactivate</li>
-					<li>Out-of-memory handling</li>
-					<li>Logging</li>
-				</ul>
-
-				<a class="button-primary" href="https://fatalerrornotify.com/?utm_source=free-plugin" target="_blank">Learn More</a>
-
-			</div>
 
 			<h2>Error Notification Settings</h2>
 
@@ -137,11 +125,37 @@ class Fatal_Error_Notify_Admin {
 				<table class="form-table">
 					<tr valign="top">
 						<th scope="row">Notification Email</th>
-						<td>
+						<td valign="top">
 							<input class="regular-text" type="email" name="fen_settings[notification_email]" value="<?php echo esc_attr( $settings['notification_email'] ); ?>" />
 							<p class="description">Configured error notifications will be sent to this address.</p>
 						</td>
+						<td>
+							<div id="fen-pro">
+								<div id="fen-pro-top">
+									<img src="<?php echo FATAL_ERROR_NOTIFY_DIR_URL ?>assets/pro-promo.png" />
+								</div>
+
+								<ul>
+									<li>Slack notifications</li>
+									<li>Stealth mode</li>
+									<li>Auto-deactivate</li>
+									<li>Out-of-memory handling</li>
+									<li>Logging</li>
+								</ul>
+
+								<a class="button-primary" href="https://fatalerrornotify.com/?utm_source=free-plugin" target="_blank">Learn More</a>
+
+							</div>
+						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row">Test Crash Notification</th>
+						<td>
+
+						<a id="test-button" class="button-primary" href="#">Send Test</a>
+						<p class="description">Creates a test fatal error to generate error e-mail message.</p>
+					</tr>
+
 					<tr valign="top">
 						<th scope="row">Error Levels To Notify</th>
 						<td>
@@ -172,6 +186,21 @@ class Fatal_Error_Notify_Admin {
 
 		<?php 
 	}
+
+	public function test_error() {
+
+		wp_remote_post( 'http://vgp.local/wp-admin/admin-ajax.php?action=create_error' );
+
+		wp_send_json_success();
+
+	}
+
+	public function create_error() {
+
+		function_that_does_not_exist();
+
+	}
+	
 
 
 
