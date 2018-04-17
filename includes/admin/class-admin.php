@@ -33,7 +33,6 @@ class Fatal_Error_Notify_Admin {
 
 		add_action( 'admin_menu', array( $this, 'admin_menu') );
 		add_action('wp_ajax_test_error', array( $this, 'test_error' ) );
-		add_action('wp_ajax_create_error', array( $this, 'create_error' ) );
 		//add_action('wp_ajax_nopriv_test_error', 'test_error');
 	}
 
@@ -70,6 +69,19 @@ class Fatal_Error_Notify_Admin {
     	wp_enqueue_style( 'fatal-error-notify', FATAL_ERROR_NOTIFY_DIR_URL . 'assets/admin.css' );
     	wp_enqueue_script( 'test_error', FATAL_ERROR_NOTIFY_DIR_URL . "assets/admin.js", array('jquery'), time());
 		wp_localize_script( 'test_error', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
+
+	}
+
+	/**
+	 * Creates test error button
+	 *
+	 * @access public
+	 * @return void
+	*/
+
+	public function test_error() {
+
+		function_that_does_not_exist();
 
 	}
 
@@ -129,6 +141,7 @@ class Fatal_Error_Notify_Admin {
 							<input class="regular-text" type="email" name="fen_settings[notification_email]" value="<?php echo esc_attr( $settings['notification_email'] ); ?>" />
 							<p class="description">Configured error notifications will be sent to this address.</p>
 						</td>
+
 						<td>
 							<div id="fen-pro">
 								<div id="fen-pro-top">
@@ -151,7 +164,6 @@ class Fatal_Error_Notify_Admin {
 					<tr valign="top">
 						<th scope="row">Test Crash Notification</th>
 						<td>
-
 						<a id="test-button" class="button-primary" href="#">Send Test</a>
 						<p class="description">Creates a test fatal error to generate error e-mail message.</p>
 					</tr>
@@ -186,22 +198,6 @@ class Fatal_Error_Notify_Admin {
 
 		<?php 
 	}
-
-	public function test_error() {
-
-		wp_remote_post( 'http://vgp.local/wp-admin/admin-ajax.php?action=create_error' );
-
-		wp_send_json_success();
-
-	}
-
-	public function create_error() {
-
-		function_that_does_not_exist();
-
-	}
-	
-
 
 
 }

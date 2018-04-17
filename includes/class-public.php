@@ -37,6 +37,7 @@ class Fatal_Error_Notify_Public {
 		if( is_null( $error ) ) {
 			return;
 		}
+		
 
 		// Allow bypassing
 		$ignore = apply_filters( 'fen_ignore_error', false, $error );
@@ -67,6 +68,23 @@ class Fatal_Error_Notify_Public {
 		}
 
 		if( !empty( $output ) ) {
+
+			$hash = md5( $error['message'] );
+			$transient = get_transient( 'fen_' . $hash );
+
+			if( strpos( $error['message'], 'function_that_does_not_exist' ) !== false ) {
+				$bypass = true;
+			} else {
+				$bypass = false;
+			}
+
+			if( ! empty( $transient ) && $bypass == false ){
+				return;
+			} else {
+				
+				set_transient( 'fen_' . $hash, true, HOUR_IN_SECONDS );
+				
+			}
 
 			$output = '<h2>Error notification</h2>For site <a href="' . get_home_url() . '" target="_blank">' . get_home_url() . '</a><br />' . $output;
 

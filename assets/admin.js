@@ -1,5 +1,6 @@
 jQuery(document).ready(function($){
 
+
 	$( "#test-button" ).on( "click", function() {
 		$("#test-button").text("Sending...");
 		$("#test-button").attr('disabled', true);
@@ -8,13 +9,12 @@ jQuery(document).ready(function($){
 			'action'	: 'test_error'
 		};
 
-		$.post(ajaxurl, data, function(response) {
+		$.post(ajaxurl, data);
+
+		setTimeout(function() {
 			$("#test-button").text("Send Test");
 			$("#test-button").removeAttr('disabled',true);
-
-
-
-		});
+		}, 1000 );
 
 	});
 
