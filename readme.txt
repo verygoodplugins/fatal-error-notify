@@ -1,9 +1,9 @@
 === Fatal Error Notify ===
 Contributors: verygoodplugins
-Tags: error, reporting, debugging
+Tags: error, reporting, debugging, fatal
 Requires at least: 4.6
-Tested up to: 4.9.4
-Stable tag: 1.2
+Tested up to: 5.1.1
+Stable tag: 1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,7 +69,14 @@ The `$error` variable is an array containing:
 
 == Changelog ==
 
-= 1.2 =
+= 1.4 - 4/26/2019 =
+* Added request URI, HTTP Referrer, and current user ID to notifications
+
+= 1.3 - 4/21/2018 =
+* Added "Send Test" button
+* Rate limiting so notifications are only sent once per hour
+
+= 1.2 - 2/8/2018 =
 * Added filter to ignore errors
 
 = 1.1 =

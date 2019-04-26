@@ -37,7 +37,6 @@ class Fatal_Error_Notify_Public {
 		if( is_null( $error ) ) {
 			return;
 		}
-		
 
 		// Allow bypassing
 		$ignore = apply_filters( 'fen_ignore_error', false, $error );
@@ -59,9 +58,18 @@ class Fatal_Error_Notify_Public {
 			if ( $error['type'] == $level_id ) {
 				$output .= '<ul>';
 				$output .= '<li><strong>Error Level:</strong> ' . fatal_error_notify()->map_error_code_to_type( $error['type'] ) . '</li>';
-				$output .= '<li><strong>Message:</strong> ' . $error['message'] . '</li>';
+				$output .= '<li><strong>Message:</strong> ' . nl2br( $error['message'] ) . '</li>';
 				$output .= '<li><strong>File:</strong> ' . $error['file'] . '</li>';
 				$output .= '<li><strong>Line:</strong> ' . $error['line'] . '</li>';
+				$output .= '<li><strong>Request:</strong> ' . $_SERVER['REQUEST_URI'] . '</li>';
+				$output .= '<li><strong>Referrer:</strong> ' . $_SERVER['HTTP_REFERER'] . '</li>';
+
+				$user_id = get_current_user_id();
+
+				if( ! empty( $user_id ) ) {
+					$output .= '<li><strong>User ID</strong>: ' . $user_id . '</li>';
+				}
+
 				$output .= '</ul><br /><br />';
 			}
 
@@ -79,7 +87,9 @@ class Fatal_Error_Notify_Public {
 			}
 
 			if( ! empty( $transient ) && $bypass == false ){
+
 				return;
+				
 			} else {
 				
 				set_transient( 'fen_' . $hash, true, HOUR_IN_SECONDS );

@@ -33,7 +33,6 @@ class Fatal_Error_Notify_Admin {
 
 		add_action( 'admin_menu', array( $this, 'admin_menu') );
 		add_action('wp_ajax_test_error', array( $this, 'test_error' ) );
-		//add_action('wp_ajax_nopriv_test_error', 'test_error');
 	}
 
 	/**
@@ -173,6 +172,8 @@ class Fatal_Error_Notify_Admin {
 						<td>
 							<fieldset>
 								<?php foreach( $this->error_levels as $i => $level_id ) : ?>
+
+									<?php if( ! isset( $settings['levels'][$level_id] ) ) $settings['levels'][$level_id] = false; ?>
 
 									<?php $level_string = fatal_error_notify()->map_error_code_to_type( $level_id ); ?>
 									<label for="level_<?php echo $level_string ?>">
