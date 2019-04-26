@@ -1,3 +1,4 @@
+![Fatal Error Notify](https://fatalerrornotify.com/wp-content/uploads/2017/12/icon_color-150x150.png)
 # Fatal Error Notify #
 
 Receive email notifications whenever a fatal error occurs on your WordPress site.
