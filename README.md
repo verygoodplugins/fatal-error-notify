@@ -3,6 +3,10 @@
 
 Receive email notifications whenever a fatal error occurs on your WordPress site.
 
+[Get it on WordPress.org &raquo;](https://wordpress.org/plugins/fatal-error-notify/)
+
+### What's it do?
+
 This plugin hooks into PHP's shutdown functions to send you a notification whenever a fatal error (or other error level, configurably) is detected on your site.
 
 Unlike traditional uptime monitoring services, which will only notify you if your entire site is down, this plugin can notify you when an error is detected on any page or process on your site.
