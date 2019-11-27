@@ -2,8 +2,8 @@
 Contributors: verygoodplugins
 Tags: error, reporting, debugging, fatal
 Requires at least: 4.6
-Tested up to: 5.1.1
-Stable tag: 1.4
+Tested up to: 5.3
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,9 @@ The `$error` variable is an array containing:
 2. Example email received when an error has been reported
 
 == Changelog ==
+
+= 1.4.1 - 11/27/2019 =
+* Tested for WordPress 5.3
 
 = 1.4 - 4/26/2019 =
 * Added request URI, HTTP Referrer, and current user ID to notifications
