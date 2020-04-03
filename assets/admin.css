@@ -34,26 +34,16 @@
 	box-shadow: 0 1px 0 #cc4d3e;
 	text-shadow: 0 -1px 1px #cc4d3e, 1px 0 1px #cc4d3e, 0 1px 1px #cc4d3e, -1px 0 1px #cc4d3e;
 }
-/*
-#test-button {
-	background: #db1818;
-    border-color: #bc1212 #b73131 #b73131;
-    color: #fff;
-    box-shadow: 0 1px 0 #ad5d1e;
+
+#fen-settings fieldset.error-levels span.description {
     display: inline-block;
-    text-decoration: none;
-    font-size: 13px;
-    line-height: 26px;
-    height: 28px;
-    margin: 0;
-    padding: 0 10px 1px;
-    cursor: pointer;
-    border-width: 1px;
-    border-style: solid;
-    -webkit-appearance: none;
-    border-radius: 3px;
-    white-space: nowrap;
-    box-sizing: border-box;
-}*/
+    padding: 2px 8px 3px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fafafa;
+    margin-left: 5px;
+}
 
-
+#fen-settings fieldset.error-levels label {
+    width: 145px;
+}

@@ -2,8 +2,8 @@
 Contributors: verygoodplugins
 Tags: error, reporting, debugging, fatal
 Requires at least: 4.6
-Tested up to: 5.3
-Stable tag: 1.4.1
+Tested up to: 5.4
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,7 +11,7 @@ Receive email notifications whenever a fatal error occurs on your site.
 
 == Description ==
 
-This plugin hooks into PHP's shutdown functions to send you a notification whenever a fatal error (or other error level, configurably) is detected on your site.
+This plugin sends you an email notification whenever a fatal error (or other error level, configurably) is detected on your site.
 
 Unlike traditional uptime monitoring services, which will only notify you if your entire site is down, this plugin can notify you when an error is detected on any page or process on your site.
 
@@ -33,11 +33,11 @@ Then:
 
 = How does the plugin send error notifications if my site is down? =
 
-Even the dreaded "500 - Internal Server Error" still triggers PHP's shutdown actions. Even if your site is completely offline, in most cases this plugin will be able to detect the error and notify you.
+Fatal Error Notify hooks into PHP's "shutdown" function to send notifications right before the page stops loading. Even the dreaded "500 - Internal Server Error" still triggers PHP's shutdown actions. Even if your site is completely offline, in most cases this plugin will be able to detect the error and notify you.
 
 = What's in the Pro version =
 
-[Fatal Error Notify Pro](https://fatalerrornotify.com/) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, out of memory handling, and more.
+[Fatal Error Notify Pro](https://fatalerrornotify.com/) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, out of memory handling, the ability to pause individual notifications, and more.
 
 = Can I exclude specific errors? =
 
@@ -68,6 +68,10 @@ The `$error` variable is an array containing:
 2. Example email received when an error has been reported
 
 == Changelog ==
+
+= 1.4.2 - 4/3/2020 =
+* Tested for WordPress 5.4
+* Added error level descriptions
 
 = 1.4.1 - 11/27/2019 =
 * Tested for WordPress 5.3

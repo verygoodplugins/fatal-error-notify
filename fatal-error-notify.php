@@ -2,9 +2,9 @@
 
 /*
 Plugin Name: Fatal Error Notify
-Description: Receive email notifications when fatal errors occur on your WordPress site
-Plugin URI: https://verygoodplugins.com/
-Version: 1.4.1
+Description: Receive email notifications when errors occur on your WordPress site
+Plugin URI: https://fatalerrornotify.com/
+Version: 1.4.2
 Author: Very Good Plugins
 Author URI: https://verygoodplugins.com/
 Text Domain: fatal-error-notify
@@ -26,19 +26,18 @@ Text Domain: fatal-error-notify
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * **********************************************************************
- *
  */
 
 // deny direct access
-if(!function_exists('add_action')) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
+if ( ! function_exists( 'add_action' ) ) {
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
 	exit();
 }
 
-define( 'FATAL_ERROR_NOTIFY_VERSION', '1.4.1' );
+define( 'FATAL_ERROR_NOTIFY_VERSION', '1.4.2' );
 
-if( ! class_exists( 'Fatal_Error_Notify' ) ) {
+if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 
 	final class Fatal_Error_Notify {
 
@@ -49,6 +48,28 @@ if( ! class_exists( 'Fatal_Error_Notify' ) ) {
 		 * @since 1.0
 		 */
 		private static $instance;
+
+		/**
+		 * @var error_levels Define PHP error levels available for reporting
+		 * @since 1.4.2
+		 */
+		public $error_levels = array(
+			E_ERROR,
+			E_WARNING,
+			E_PARSE,
+			E_NOTICE,
+			E_CORE_ERROR,
+			E_CORE_WARNING,
+			// E_COMPILE_ERROR,
+			// E_COMPILE_WARNING,
+			E_USER_ERROR,
+			E_USER_WARNING,
+			E_USER_NOTICE,
+			E_STRICT,
+			// E_RECOVERABLE_ERROR,
+			E_DEPRECATED,
+			// E_USER_DEPRECATED,
+		);
 
 
 		/**
@@ -67,7 +88,7 @@ if( ! class_exists( 'Fatal_Error_Notify' ) ) {
 
 			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Fatal_Error_Notify ) ) {
 
-				self::$instance = new Fatal_Error_Notify;
+				self::$instance = new Fatal_Error_Notify();
 				self::$instance->setup_constants();
 				self::$instance->includes();
 
@@ -112,16 +133,16 @@ if( ! class_exists( 'Fatal_Error_Notify' ) ) {
 
 		private function setup_constants() {
 
-			if(!defined('FATAL_ERROR_NOTIFY_DIR_PATH')) {
-				define('FATAL_ERROR_NOTIFY_DIR_PATH', plugin_dir_path(__FILE__));
+			if ( ! defined( 'FATAL_ERROR_NOTIFY_DIR_PATH' ) ) {
+				define( 'FATAL_ERROR_NOTIFY_DIR_PATH', plugin_dir_path( __FILE__ ) );
 			}
 
-			if(!defined('FATAL_ERROR_NOTIFY_PLUGIN_PATH')) {
-				define('FATAL_ERROR_NOTIFY_PLUGIN_PATH', plugin_basename(__FILE__));
+			if ( ! defined( 'FATAL_ERROR_NOTIFY_PLUGIN_PATH' ) ) {
+				define( 'FATAL_ERROR_NOTIFY_PLUGIN_PATH', plugin_basename( __FILE__ ) );
 			}
 
-			if(!defined('FATAL_ERROR_NOTIFY_DIR_URL')) {
-				define('FATAL_ERROR_NOTIFY_DIR_URL', plugin_dir_url(__FILE__));
+			if ( ! defined( 'FATAL_ERROR_NOTIFY_DIR_URL' ) ) {
+				define( 'FATAL_ERROR_NOTIFY_DIR_URL', plugin_dir_url( __FILE__ ) );
 			}
 
 		}
@@ -135,8 +156,8 @@ if( ! class_exists( 'Fatal_Error_Notify' ) ) {
 
 		private function includes() {
 
-			require_once FATAL_ERROR_NOTIFY_DIR_PATH .'includes/admin/class-admin.php';
-			require_once FATAL_ERROR_NOTIFY_DIR_PATH .'includes/class-public.php';
+			require_once FATAL_ERROR_NOTIFY_DIR_PATH . 'includes/admin/class-admin.php';
+			require_once FATAL_ERROR_NOTIFY_DIR_PATH . 'includes/class-public.php';
 
 		}
 
@@ -144,42 +165,42 @@ if( ! class_exists( 'Fatal_Error_Notify' ) ) {
 		 * Map error code to error string
 		 *
 		 * @return void
-		*/
+		 */
 
 		public function map_error_code_to_type( $code ) {
 
-			switch($code) { 
-			    case E_ERROR: // 1 // 
-			        return 'E_ERROR'; 
-			    case E_WARNING: // 2 // 
-			        return 'E_WARNING'; 
-			    case E_PARSE: // 4 // 
-			        return 'E_PARSE'; 
-			    case E_NOTICE: // 8 // 
-			        return 'E_NOTICE'; 
-			    case E_CORE_ERROR: // 16 // 
-			        return 'E_CORE_ERROR'; 
-			    case E_CORE_WARNING: // 32 // 
-			        return 'E_CORE_WARNING'; 
-			    case E_COMPILE_ERROR: // 64 // 
-			        return 'E_COMPILE_ERROR'; 
-			    case E_COMPILE_WARNING: // 128 // 
-			        return 'E_COMPILE_WARNING'; 
-			    case E_USER_ERROR: // 256 // 
-			        return 'E_USER_ERROR'; 
-			    case E_USER_WARNING: // 512 // 
-			        return 'E_USER_WARNING'; 
-			    case E_USER_NOTICE: // 1024 // 
-			        return 'E_USER_NOTICE'; 
-			    case E_STRICT: // 2048 // 
-			        return 'E_STRICT'; 
-			    case E_RECOVERABLE_ERROR: // 4096 // 
-			        return 'E_RECOVERABLE_ERROR'; 
-			    case E_DEPRECATED: // 8192 // 
-			        return 'E_DEPRECATED'; 
-			    case E_USER_DEPRECATED: // 16384 // 
-			        return 'E_USER_DEPRECATED'; 
-			} 
+			switch ( $code ) {
+				case E_ERROR: // 1 //
+					return 'E_ERROR';
+				case E_WARNING: // 2 //
+					return 'E_WARNING';
+				case E_PARSE: // 4 //
+					return 'E_PARSE';
+				case E_NOTICE: // 8 //
+					return 'E_NOTICE';
+				case E_CORE_ERROR: // 16 //
+					return 'E_CORE_ERROR';
+				case E_CORE_WARNING: // 32 //
+					return 'E_CORE_WARNING';
+				case E_COMPILE_ERROR: // 64 //
+					return 'E_COMPILE_ERROR';
+				case E_COMPILE_WARNING: // 128 //
+					return 'E_COMPILE_WARNING';
+				case E_USER_ERROR: // 256 //
+					return 'E_USER_ERROR';
+				case E_USER_WARNING: // 512 //
+					return 'E_USER_WARNING';
+				case E_USER_NOTICE: // 1024 //
+					return 'E_USER_NOTICE';
+				case E_STRICT: // 2048 //
+					return 'E_STRICT';
+				case E_RECOVERABLE_ERROR: // 4096 //
+					return 'E_RECOVERABLE_ERROR';
+				case E_DEPRECATED: // 8192 //
+					return 'E_DEPRECATED';
+				case E_USER_DEPRECATED: // 16384 //
+					return 'E_USER_DEPRECATED';
+			}
 
 		}
 
@@ -194,13 +215,14 @@ if( ! class_exists( 'Fatal_Error_Notify' ) ) {
  *
  * Use this function like you would a global variable, except without needing
  * to declare the global.
- *
  */
 
-function fatal_error_notify() {
-	return Fatal_Error_Notify::instance();
+if ( ! function_exists( 'fatal_error_notify' ) ) {
+
+	function fatal_error_notify() {
+		return Fatal_Error_Notify::instance();
+	}
+
+	fatal_error_notify();
+
 }
-
-fatal_error_notify();
-
-?>

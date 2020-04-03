@@ -58,6 +58,13 @@ This is a developer's portal for Fatal Error Notify and should _not_ be used for
 
 ## Changelog ##
 
+#### 1.4.2 - 4/3/2020
+* Tested for WordPress 5.4
+* Added error level descriptions
+
+#### 1.4.1 - 11/27/2019
+* Tested for WordPress 5.3
+
 #### 1.4 - 4/26/2019
 * Added request URI, HTTP Referrer, and current user ID to notifications
 
