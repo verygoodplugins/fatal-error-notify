@@ -37,7 +37,9 @@ Fatal Error Notify hooks into PHP's "shutdown" function to send notifications ri
 
 = What's in the Pro version =
 
-[Fatal Error Notify Pro](https://fatalerrornotify.com/) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, out of memory handling, the ability to pause individual notifications, and more.
+[Fatal Error Notify Pro](https://fatalerrornotify.com/?utm_campaign=fatal-error-notify-free&utm_source=wp-org) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, out of memory handling, the ability to pause individual notifications, and more.
+
+Fatal Error Notify Pro also includes integrations with [WP Fusion](https://wpfusion.com/?utm_campaign=fatal-error-notify-free&utm_source=wp-org) and Gravity Forms and can send notifications when errors are logged in those plugins.
 
 = Can I exclude specific errors? =
 

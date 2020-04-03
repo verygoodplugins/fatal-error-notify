@@ -18,6 +18,8 @@ Automatic plugin and theme updates often introduce problems that you aren't awar
 
 [Fatal Error Notify Pro](https://fatalerrornotify.com/) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, out of memory handling, and more.
 
+Fatal Error Notify Pro also includes integrations with [WP Fusion](https://wpfusion.com/?utm_campaign=fatal-error-notify-free&utm_source=github) and Gravity Forms and can send notifications when errors are logged in those plugins.
+
 ### Can I exclude specific errors?
 
 Yes, you can use the filter `fen_ingore_error`, like so:
