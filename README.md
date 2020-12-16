@@ -16,7 +16,7 @@ Automatic plugin and theme updates often introduce problems that you aren't awar
 
 ### What's in the Pro version?
 
-[Fatal Error Notify Pro](https://fatalerrornotify.com/) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, out of memory handling, and more.
+[Fatal Error Notify Pro](https://fatalerrornotify.com/) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, out of memory handling, multisite support, and more.
 
 Fatal Error Notify Pro also includes integrations with [WP Fusion](https://wpfusion.com/?utm_campaign=fatal-error-notify-free&utm_source=github) and Gravity Forms and can send notifications when errors are logged in those plugins.
 
@@ -59,6 +59,11 @@ If you find an issue, let us know [here](https://github.com/verygoodplugins/fata
 This is a developer's portal for Fatal Error Notify and should _not_ be used for support. Please visit the [support page](https://fatalerrornotify.com/support/contact/) if you need to submit a support request.
 
 ## Changelog ##
+
+#### 1.4.3 - 12/16/2020
+* Tested for WordPress 5.6
+* Fixed PHP notice when HTTP referrer was missing
+* Added fen_use_wp_mail filter
 
 #### 1.4.2 - 4/3/2020
 * Tested for WordPress 5.4

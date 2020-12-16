@@ -2,8 +2,8 @@
 Contributors: verygoodplugins
 Tags: error, reporting, debugging, fatal
 Requires at least: 4.6
-Tested up to: 5.5
-Stable tag: 1.4.2
+Tested up to: 5.6
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,7 +37,7 @@ Fatal Error Notify hooks into PHP's "shutdown" function to send notifications ri
 
 = What's in the Pro version =
 
-[Fatal Error Notify Pro](https://fatalerrornotify.com/?utm_campaign=fatal-error-notify-free&utm_source=wp-org) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, out of memory handling, the ability to pause individual notifications, and more.
+[Fatal Error Notify Pro](https://fatalerrornotify.com/?utm_campaign=fatal-error-notify-free&utm_source=wp-org) includes several additional features, like Slack notifications, the ability to hide the plugin settings, multisite support, logging of recorded errors, out of memory handling, the ability to pause individual notifications, and more.
 
 Fatal Error Notify Pro also includes integrations with [WP Fusion](https://wpfusion.com/?utm_campaign=fatal-error-notify-free&utm_source=wp-org) and Gravity Forms and can send notifications when errors are logged in those plugins.
 
@@ -70,6 +70,11 @@ The `$error` variable is an array containing:
 2. Example email received when an error has been reported
 
 == Changelog ==
+
+= 1.4.3 - 12/16/2020 =
+* Tested for WordPress 5.6
+* Fixed PHP notice when HTTP referrer was missing
+* Added fen_use_wp_mail filter
 
 = 1.4.2 - 4/3/2020 =
 * Tested for WordPress 5.4

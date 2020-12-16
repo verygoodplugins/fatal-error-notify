@@ -62,7 +62,14 @@ class Fatal_Error_Notify_Public {
 				$output .= '<li><strong>File:</strong> ' . $error['file'] . '</li>';
 				$output .= '<li><strong>Line:</strong> ' . $error['line'] . '</li>';
 				$output .= '<li><strong>Request:</strong> ' . $_SERVER['REQUEST_URI'] . '</li>';
-				$output .= '<li><strong>Referrer:</strong> ' . $_SERVER['HTTP_REFERER'] . '</li>';
+
+				if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
+					$referrer = urlencode( $_SERVER['HTTP_REFERER'] );
+				} else {
+					$referrer = 'unknown';
+				}
+
+				$output .= '<li><strong>Referrer:</strong> ' . $referrer . '</li>';
 
 				$user_id = get_current_user_id();
 
@@ -97,7 +104,7 @@ class Fatal_Error_Notify_Public {
 
 			$output = '<h2>Error notification</h2>For site <a href="' . get_home_url() . '" target="_blank">' . get_home_url() . '</a><br />' . $output;
 
-			if ( function_exists( 'wp_mail' ) ) {
+			if ( function_exists( 'wp_mail' ) && apply_filters( 'fen_use_wp_mail', true ) ) {
 
 				add_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
 				wp_mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output );
