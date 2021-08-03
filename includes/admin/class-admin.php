@@ -45,8 +45,8 @@ class Fatal_Error_Notify_Admin {
 
 	public function enqueue_scripts() {
 
-		wp_enqueue_style( 'fatal-error-notify', FATAL_ERROR_NOTIFY_DIR_URL . 'assets/admin.css' );
-		wp_enqueue_script( 'test_error', FATAL_ERROR_NOTIFY_DIR_URL . 'assets/admin.js', array( 'jquery' ), time() );
+		wp_enqueue_style( 'fatal-error-notify', FATAL_ERROR_NOTIFY_DIR_URL . 'assets/admin.css', array(), FATAL_ERROR_NOTIFY_VERSION );
+		wp_enqueue_script( 'test_error', FATAL_ERROR_NOTIFY_DIR_URL . 'assets/admin.js', array( 'jquery' ), FATAL_ERROR_NOTIFY_VERSION );
 		wp_localize_script( 'test_error', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 
 	}
@@ -106,6 +106,27 @@ class Fatal_Error_Notify_Admin {
 
 			<h2>Error Notification Settings</h2>
 
+			<div id="fen-pro">
+				<div id="fen-pro-top">
+					<img src="<?php echo FATAL_ERROR_NOTIFY_DIR_URL; ?>assets/pro-promo.png" />
+				</div>
+
+				<ul>
+					<li>Slack notifications</li>
+					<li>Pause notifications</li>
+					<li>Stealth mode</li>
+				</ul>
+
+				<ul>
+					<li>Out-of-memory handling</li>
+					<li>Gravity Forms error notification</li>
+					<li>WP Fusion error notifications</li>
+				</ul>
+
+				<a class="button-primary" href="https://fatalerrornotify.com/?utm_source=free-plugin" target="_blank">Learn More</a>
+
+			</div>
+
 			<form id="fen-settings" action="" method="post">
 				<?php wp_nonce_field( 'fen_settings', 'fen_settings_nonce' ); ?>
 				<input type="hidden" name="action" value="update">
@@ -116,25 +137,6 @@ class Fatal_Error_Notify_Admin {
 						<td valign="top">
 							<input class="regular-text" type="email" name="fen_settings[notification_email]" value="<?php echo esc_attr( $settings['notification_email'] ); ?>" />
 							<p class="description">Configured error notifications will be sent to this address.</p>
-						</td>
-
-						<td>
-							<div id="fen-pro">
-								<div id="fen-pro-top">
-									<img src="<?php echo FATAL_ERROR_NOTIFY_DIR_URL; ?>assets/pro-promo.png" />
-								</div>
-
-								<ul>
-									<li>Slack notifications</li>
-									<li>Pause notifications</li>
-									<li>Stealth mode</li>
-									<li>Out-of-memory handling</li>
-									<li>Logging</li>
-								</ul>
-
-								<a class="button-primary" href="https://fatalerrornotify.com/?utm_source=free-plugin" target="_blank">Learn More</a>
-
-							</div>
 						</td>
 					</tr>
 					<tr valign="top">

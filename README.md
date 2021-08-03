@@ -60,6 +60,10 @@ This is a developer's portal for Fatal Error Notify and should _not_ be used for
 
 ## Changelog ##
 
+#### 1.4.4 - 8/3/2021
+* Tested for WordPress 5.8
+* Moved upgrade nag to top of settings page to prevent layout issues on smaller screens
+
 #### 1.4.3 - 12/16/2020
 * Tested for WordPress 5.6
 * Fixed PHP notice when HTTP referrer was missing
