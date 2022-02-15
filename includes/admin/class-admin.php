@@ -28,7 +28,7 @@ class Fatal_Error_Notify_Admin {
 			'Fatal Error Notification Settings',
 			'Fatal Error Notify',
 			'manage_options',
-			'fatal_error_notify',
+			'fatal-error-notify',
 			array( $this, 'settings_page' )
 		);
 
@@ -45,9 +45,10 @@ class Fatal_Error_Notify_Admin {
 
 	public function enqueue_scripts() {
 
+		remove_all_actions( 'admin_notices' ); // don't need to see these on our page.
+
 		wp_enqueue_style( 'fatal-error-notify', FATAL_ERROR_NOTIFY_DIR_URL . 'assets/admin.css', array(), FATAL_ERROR_NOTIFY_VERSION );
 		wp_enqueue_script( 'test_error', FATAL_ERROR_NOTIFY_DIR_URL . 'assets/admin.js', array( 'jquery' ), FATAL_ERROR_NOTIFY_VERSION );
-		wp_localize_script( 'test_error', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 
 	}
 
@@ -75,7 +76,7 @@ class Fatal_Error_Notify_Admin {
 
 		// Save settings
 		if ( isset( $_POST['fen_settings_nonce'] ) && wp_verify_nonce( $_POST['fen_settings_nonce'], 'fen_settings' ) ) {
-			update_option( 'vgp_fen_settings', $_POST['fen_settings'] );
+			update_option( 'vgp_fen_settings', map_deep( wp_unslash( $_POST['fen_settings'] ), 'sanitize_text_field' ) );
 			echo '<div id="message" class="updated fade"><p><strong>Settings saved.</strong></p></div>';
 		}
 
@@ -108,7 +109,7 @@ class Fatal_Error_Notify_Admin {
 
 			<div id="fen-pro">
 				<div id="fen-pro-top">
-					<img src="<?php echo FATAL_ERROR_NOTIFY_DIR_URL; ?>assets/pro-promo.png" />
+					<img src="<?php echo esc_url( FATAL_ERROR_NOTIFY_DIR_URL . 'assets/pro-promo.png' ); ?>" />
 				</div>
 
 				<ul>
@@ -162,7 +163,7 @@ class Fatal_Error_Notify_Admin {
 
 									<label for="level_<?php echo $level_string; ?>">
 										<input type="checkbox" name="fen_settings[levels][<?php echo $level_id; ?>]" id="level_<?php echo $level_string; ?>" value="1" <?php checked( $settings['levels'][ $level_id ] ); ?> />
-										<?php echo $level_string; ?>
+										<?php echo esc_html( $level_string ); ?>
 									</label>
 
 									<?php

@@ -38,10 +38,19 @@ class Fatal_Error_Notify_Public {
 			return;
 		}
 
-		// Allow bypassing
+		// Allow bypassing.
 		$ignore = apply_filters( 'fen_ignore_error', false, $error );
 
 		if ( $ignore ) {
+			return;
+		}
+
+		// A couple types of errors we don't need reported.
+
+		if ( E_WARNING === $error['type'] && strpos( $error['message'], 'unlink' ) ) {
+			// a lot of plugins generate these because it's faster to unlink()
+			// without checking if the file exists first, even if it creates a
+			// warning.
 			return;
 		}
 
@@ -103,6 +112,8 @@ class Fatal_Error_Notify_Public {
 			}
 
 			$output = '<h2>Error notification</h2>For site <a href="' . get_home_url() . '" target="_blank">' . get_home_url() . '</a><br />' . $output;
+
+			$output .= '<br />(Pause notifications, mute plugins, and more in <a href="https://fatalerrornotify.com/?utm_source=free-plugin&utm_medium=notification">Fatal Error Notify Pro</a>)</em><br />';
 
 			if ( function_exists( 'wp_mail' ) && apply_filters( 'fen_use_wp_mail', true ) ) {
 

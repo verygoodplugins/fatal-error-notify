@@ -60,6 +60,11 @@ This is a developer's portal for Fatal Error Notify and should _not_ be used for
 
 ## Changelog ##
 
+#### 1.4.5 - 2/15/2022
+* Tested for WordPress 5.9
+* Improved - "unlink" warnings will be ignored by default (see https://wordpress.org/support/topic/wordfence-notification-error-wordfenceclass-php/#post-15187940)
+* Added upgrade prompt in notification email
+
 #### 1.4.4 - 8/3/2021
 * Tested for WordPress 5.8
 * Moved upgrade nag to top of settings page to prevent layout issues on smaller screens
