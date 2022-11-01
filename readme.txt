@@ -2,8 +2,8 @@
 Contributors: verygoodplugins
 Tags: error, reporting, debugging, fatal
 Requires at least: 4.6
-Tested up to: 5.9
-Stable tag: 1.4.5
+Tested up to: 6.1.0
+Stable tag: 1.4.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,12 @@ The `$error` variable is an array containing:
 2. Example email received when an error has been reported
 
 == Changelog ==
+
+= 1.4.6 - 11/1/2022 =
+* Tested for WordPress 6.1.0
+* Improved - Moved actions to `shutdown` action priority 1, to fix cases where other plugins generate notices or warnings during `shutdown` after a fatal error
+* Improved - "rmdir" warnings will be ignored by default
+* Fixed `unlink` warnings still triggering notifications if `unlink` was the first part of the error string
 
 = 1.4.5 - 2/15/2022 =
 * Tested for WordPress 5.9

@@ -3,3 +3,4 @@
 composer.json
 *.codekit
 .DS_Store
+fatal-error-notify.code-workspace
