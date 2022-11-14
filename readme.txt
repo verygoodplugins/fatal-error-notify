@@ -71,6 +71,9 @@ The `$error` variable is an array containing:
 
 == Changelog ==
 
+= 1.4.7 - 11/14/2022 =
+* Fixed typo (misplaced parenthesis) checking `WARNING` level errors in v1.4.6
+
 = 1.4.6 - 11/1/2022 =
 * Tested for WordPress 6.1.0
 * Improved - Moved actions to `shutdown` action priority 1, to fix cases where other plugins generate notices or warnings during `shutdown` after a fatal error

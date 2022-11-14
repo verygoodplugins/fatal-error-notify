@@ -60,6 +60,15 @@ This is a developer's portal for Fatal Error Notify and should _not_ be used for
 
 ## Changelog ##
 
+#### 1.4.7 - 11/14/2022
+* Fixed typo (misplaced parenthesis) checking `WARNING` level errors in v1.4.6
+
+#### 1.4.6 - 11/1/2022
+* Tested for WordPress 6.1.0
+* Improved - Moved actions to `shutdown` action priority 1, to fix cases where other plugins generate notices or warnings during `shutdown` after a fatal error
+* Improved - "rmdir" warnings will be ignored by default
+* Fixed `unlink` warnings still triggering notifications if `unlink` was the first part of the error string
+
 #### 1.4.5 - 2/15/2022
 * Tested for WordPress 5.9
 * Improved - "unlink" warnings will be ignored by default (see https://wordpress.org/support/topic/wordfence-notification-error-wordfenceclass-php/#post-15187940)

@@ -48,7 +48,7 @@ class Fatal_Error_Notify_Public {
 
 		// A couple types of errors we don't need reported.
 
-		if ( E_WARNING === $error['type'] && ( false !== strpos( $error['message'], 'unlink' || false !== strpos( $error['message'], 'rmdir' ) ) ) ) {
+		if ( E_WARNING === $error['type'] && ( false !== strpos( $error['message'], 'unlink' ) || false !== strpos( $error['message'], 'rmdir' ) ) ) {
 			// a lot of plugins generate these because it's faster to unlink()
 			// without checking if the file exists first, even if it creates a
 			// warning.
