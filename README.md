@@ -45,6 +45,26 @@ The `$error` variable is an array containing:
 * `$error['file']`: (string) The path to the file that triggered the error
 * `$error['line']`: (int) The line number that triggered the error
 
+### Does it support WP CLI
+
+Yup, you bet! You can update the plugin settings using WP CLI, for example to set a default list of error levels, or a notification email address.
+
+The two methods are `get_option` and `update_option`. For example:
+
+```wp fatal-error-notify get_option slack_notifications```
+
+Will tell you if Slack notifications are enabled on the site.
+
+```wp fatal-error-notify update_option notification_email email@domain.com```
+
+Will update the notification email for the site.
+
+You can also update options on multiple sites using xargs:
+
+```wp site list --field=url | xargs -n1 -I {} sh -c 'wp --url={} fatal-error-notify update_option notification_email email@domain.com'```
+
+If you are updating options that are stored as arrays (for example `levels` or `plugins`) you can use JSON-formatted values. For an example, use `get_option` first on the field you are trying to update.
+
 ## Installation ##
 
 1. You can clone the GitHub repository: `https://github.com/verygoodplugins/fatal-error-notify.git`
@@ -59,6 +79,10 @@ If you find an issue, let us know [here](https://github.com/verygoodplugins/fata
 This is a developer's portal for Fatal Error Notify and should _not_ be used for support. Please visit the [support page](https://fatalerrornotify.com/support/contact/) if you need to submit a support request.
 
 ## Changelog ##
+
+#### 1.5.0 - 3/20/2023
+* Tested for WordPress 6.2.0
+* Added [WP CLI endpoint](https://fatalerrornotify.com/documentation/#wp-cli) for updating plugin settings
 
 #### 1.4.7 - 11/14/2022
 * Fixed typo (misplaced parenthesis) checking `WARNING` level errors in v1.4.6

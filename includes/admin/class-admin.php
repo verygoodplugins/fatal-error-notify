@@ -115,12 +115,13 @@ class Fatal_Error_Notify_Admin {
 				<ul>
 					<li>Slack notifications</li>
 					<li>Pause notifications</li>
+					<li>Out-of-memory notifications</li>
 					<li>Stealth mode</li>
 				</ul>
 
 				<ul>
-					<li>Out-of-memory handling</li>
-					<li>Gravity Forms error notification</li>
+					<li>WooCommerce error notifications</li>
+					<li>Gravity Forms error notifications</li>
 					<li>WP Fusion error notifications</li>
 				</ul>
 
@@ -209,7 +210,4 @@ class Fatal_Error_Notify_Admin {
 		<?php
 	}
 
-
 }
-
-new Fatal_Error_Notify_Admin();

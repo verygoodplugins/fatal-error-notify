@@ -1,14 +1,14 @@
 <?php
 
-/*
-Plugin Name: Fatal Error Notify
-Description: Receive email notifications when errors occur on your WordPress site
-Plugin URI: https://fatalerrornotify.com/
-Version: 1.4.7
-Author: Very Good Plugins
-Author URI: https://verygoodplugins.com/
-Text Domain: fatal-error-notify
-*/
+/**
+ * Plugin Name: Fatal Error Notify
+ * Description: Receive email notifications when errors occur on your WordPress site
+ * Plugin URI: https://fatalerrornotify.com/
+ * Version: 1.5.0
+ * Author: Very Good Plugins
+ * Author URI: https://verygoodplugins.com/
+ * Text Domain: fatal-error-notify
+ */
 
 /**
  * @copyright Copyright (c) 2017. All rights reserved.
@@ -35,13 +35,21 @@ if ( ! function_exists( 'add_action' ) ) {
 	exit();
 }
 
-define( 'FATAL_ERROR_NOTIFY_VERSION', '1.4.7' );
+define( 'FATAL_ERROR_NOTIFY_VERSION', '1.5.0' );
 
 if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 
 	final class Fatal_Error_Notify {
 
 		/** Singleton *************************************************************/
+
+		/**
+		 * Admin interfaces and settings
+		 *
+		 * @var admin
+		 * @since 1.5.0
+		 */
+		public $admin;
 
 		/**
 		 * @var Fatal_Error_Notify The one true Fatal_Error_Notify
@@ -60,15 +68,11 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 			E_NOTICE,
 			E_CORE_ERROR,
 			E_CORE_WARNING,
-			// E_COMPILE_ERROR,
-			// E_COMPILE_WARNING,
 			E_USER_ERROR,
 			E_USER_WARNING,
 			E_USER_NOTICE,
 			E_STRICT,
-			// E_RECOVERABLE_ERROR,
 			E_DEPRECATED,
-			// E_USER_DEPRECATED,
 		);
 
 
@@ -91,6 +95,8 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 				self::$instance = new Fatal_Error_Notify();
 				self::$instance->setup_constants();
 				self::$instance->includes();
+
+				self::$instance->admin = new Fatal_Error_Notify_Admin();
 
 			}
 
@@ -158,6 +164,10 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 
 			require_once FATAL_ERROR_NOTIFY_DIR_PATH . 'includes/admin/class-admin.php';
 			require_once FATAL_ERROR_NOTIFY_DIR_PATH . 'includes/class-public.php';
+
+			if ( defined( 'WP_CLI' ) && WP_CLI ) {
+				require_once FATAL_ERROR_NOTIFY_DIR_PATH . 'includes/class-cli-command.php';
+			}
 
 		}
 

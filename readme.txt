@@ -2,8 +2,8 @@
 Contributors: verygoodplugins
 Tags: error, reporting, debugging, fatal
 Requires at least: 4.6
-Tested up to: 6.1.0
-Stable tag: 1.4.6
+Tested up to: 6.2.0
+Stable tag: 1.4.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,7 +39,7 @@ Fatal Error Notify hooks into PHP's "shutdown" function to send notifications ri
 
 [Fatal Error Notify Pro](https://fatalerrornotify.com/?utm_campaign=fatal-error-notify-free&utm_source=wp-org) includes several additional features, like Slack notifications, the ability to hide the plugin settings, multisite support, logging of recorded errors, out of memory handling, the ability to pause individual notifications, and more.
 
-Fatal Error Notify Pro also includes integrations with [WP Fusion](https://wpfusion.com/?utm_campaign=fatal-error-notify-free&utm_source=wp-org) and Gravity Forms and can send notifications when errors are logged in those plugins.
+Fatal Error Notify Pro also includes integrations with [WP Fusion](https://wpfusion.com/?utm_campaign=fatal-error-notify-free&utm_source=wp-org), WooCommerce, and Gravity Forms and can send notifications when errors are logged in those plugins.
 
 = Can I exclude specific errors? =
 
@@ -64,12 +64,36 @@ The `$error` variable is an array containing:
 * `$error['file']`: (string) The path to the file that triggered the error
 * `$error['line']`: (int) The line number that triggered the error
 
+= Does it support WP CLI =
+
+Yup, you bet! You can update the plugin settings using WP CLI, for example to set a default list of error levels, or a notification email address.
+
+The two methods are `get_option` and `update_option`. For example:
+
+	wp fatal-error-notify get_option slack_notifications
+
+Will tell you if Slack notifications are enabled on the site.
+
+	wp fatal-error-notify update_option notification_email email@domain.com
+
+Will update the notification email for the site.
+
+You can also update options on multiple sites using xargs:
+
+	wp site list --field=url | xargs -n1 -I {} sh -c 'wp --url={} fatal-error-notify update_option notification_email email@domain.com'
+
+If you are updating options that are stored as arrays (for example `levels` or `plugins`) you can use JSON-formatted values. For an example, use `get_option` first on the field you are trying to update.
+
 == Screenshots ==
 
 1. Admin configuration settings
 2. Example email received when an error has been reported
 
 == Changelog ==
+
+= 1.5.0 - 3/20/2023 =
+* Tested for WordPress 6.2.0
+* Added [WP CLI endpoint](https://fatalerrornotify.com/documentation/#wp-cli) for updating plugin settings
 
 = 1.4.7 - 11/14/2022 =
 * Fixed typo (misplaced parenthesis) checking `WARNING` level errors in v1.4.6
