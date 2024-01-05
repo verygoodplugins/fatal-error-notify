@@ -61,73 +61,67 @@ class Fatal_Error_Notify_Public {
 			return;
 		}
 
-		$output = '';
-
-		foreach ( $settings['levels'] as $level_id => $enabled ) {
-
-			if ( $error['type'] == $level_id ) {
-				$output .= '<ul>';
-				$output .= '<li><strong>Error Level:</strong> ' . fatal_error_notify()->map_error_code_to_type( $error['type'] ) . '</li>';
-				$output .= '<li><strong>Message:</strong> ' . nl2br( $error['message'] ) . '</li>';
-				$output .= '<li><strong>File:</strong> ' . $error['file'] . '</li>';
-				$output .= '<li><strong>Line:</strong> ' . $error['line'] . '</li>';
-				$output .= '<li><strong>Request:</strong> ' . $_SERVER['REQUEST_URI'] . '</li>';
-
-				if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
-					$referrer = urlencode( $_SERVER['HTTP_REFERER'] );
-				} else {
-					$referrer = 'unknown';
-				}
-
-				$output .= '<li><strong>Referrer:</strong> ' . $referrer . '</li>';
-
-				$user_id = get_current_user_id();
-
-				if ( ! empty( $user_id ) ) {
-					$output .= '<li><strong>User ID</strong>: ' . $user_id . '</li>';
-				}
-
-				$output .= '</ul><br /><br />';
-			}
+		if ( empty( $settings['levels'][ $error['type'] ] ) ) {
+			return;
 		}
 
-		if ( ! empty( $output ) ) {
+		$output  = '<ul>';
+		$output .= '<li><strong>Error Level:</strong> ' . fatal_error_notify()->map_error_code_to_type( $error['type'] ) . '</li>';
+		$output .= '<li><strong>Message:</strong> ' . nl2br( $error['message'] ) . '</li>';
+		$output .= '<li><strong>File:</strong> ' . $error['file'] . '</li>';
+		$output .= '<li><strong>Line:</strong> ' . $error['line'] . '</li>';
+		$output .= '<li><strong>Request:</strong> ' . $_SERVER['REQUEST_URI'] . '</li>';
 
-			$hash      = md5( $error['message'] );
-			$transient = get_transient( 'fen_' . $hash );
+		if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
+			$referrer = urlencode( $_SERVER['HTTP_REFERER'] );
+		} else {
+			$referrer = 'unknown';
+		}
 
-			if ( strpos( $error['message'], 'function_that_does_not_exist' ) !== false ) {
-				$bypass = true;
-			} else {
-				$bypass = false;
-			}
+		$output .= '<li><strong>Referrer:</strong> ' . $referrer . '</li>';
 
-			if ( ! empty( $transient ) && false === $bypass ) {
+		$user_id = get_current_user_id();
 
-				return;
+		if ( ! empty( $user_id ) ) {
+			$output .= '<li><strong>User ID</strong>: ' . $user_id . '</li>';
+		}
 
-			} else {
+		$output .= '</ul><br /><br />';
 
-				set_transient( 'fen_' . $hash, true, HOUR_IN_SECONDS );
+		$hash      = md5( $error['message'] );
+		$transient = get_transient( 'fen_' . $hash );
 
-			}
+		if ( strpos( $error['message'], 'fatal_error_notify_test_error_function' ) !== false ) {
+			$bypass = true;
+		} else {
+			$bypass = false;
+		}
 
-			$output = '<h2>Error notification</h2>For site <a href="' . get_home_url() . '" target="_blank">' . get_home_url() . '</a><br />' . $output;
+		if ( ! empty( $transient ) && false === $bypass ) {
 
-			$output .= '<br />(Pause notifications, mute plugins, and more in <a href="https://fatalerrornotify.com/?utm_source=free-plugin&utm_medium=notification">Fatal Error Notify Pro</a>)</em><br />';
+			return;
 
-			if ( function_exists( 'wp_mail' ) && apply_filters( 'fen_use_wp_mail', true ) ) {
+		} else {
 
-				add_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
-				wp_mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output );
+			set_transient( 'fen_' . $hash, true, HOUR_IN_SECONDS );
 
-			} else {
+		}
 
-				$headers  = 'MIME-Version: 1.0' . "\r\n";
-				$headers .= 'Content-type:text/html;charset=UTF-8' . "\r\n";
-				mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output, $headers );
+		$output = '<h2>Error notification</h2>For site <a href="' . get_home_url() . '" target="_blank">' . get_home_url() . '</a><br />' . $output;
 
-			}
+		$output .= '<br />(Pause notifications, mute plugins, and more in <a href="https://fatalerrornotify.com/?utm_source=free-plugin&utm_medium=notification">Fatal Error Notify Pro</a>)</em><br />';
+
+		if ( function_exists( 'wp_mail' ) && apply_filters( 'fen_use_wp_mail', true ) ) {
+
+			add_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
+			wp_mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output );
+
+		} else {
+
+			$headers  = 'MIME-Version: 1.0' . "\r\n";
+			$headers .= 'Content-type:text/html;charset=UTF-8' . "\r\n";
+			mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output, $headers );
+
 		}
 
 	}

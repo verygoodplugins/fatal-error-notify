@@ -80,6 +80,14 @@ This is a developer's portal for Fatal Error Notify and should _not_ be used for
 
 ## Changelog ##
 
+### 1.5.2 - 1/5/2024
+* Improved - Removed some uncommon error types
+* Fixed test error endpoint being accessible by non-admins
+
+### 1.5.1 - 8/11/2023
+* Tested for WordPress 6.3.0
+* Improved - "mkdir" warnings will be ignored by default
+
 #### 1.5.0 - 3/20/2023
 * Tested for WordPress 6.2.0
 * Added [WP CLI endpoint](https://fatalerrornotify.com/documentation/#wp-cli) for updating plugin settings

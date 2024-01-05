@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Fatal Error Notify
- * Description: Receive email notifications when errors occur on your WordPress site
+ * Description: Receive email notifications when errors occur on your WordPress site.
  * Plugin URI: https://fatalerrornotify.com/
  * Version: 1.5.1
  * Author: Very Good Plugins
@@ -66,11 +66,8 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 			E_WARNING,
 			E_PARSE,
 			E_NOTICE,
-			E_CORE_ERROR,
-			E_CORE_WARNING,
 			E_USER_ERROR,
 			E_USER_WARNING,
-			E_USER_NOTICE,
 			E_STRICT,
 			E_DEPRECATED,
 		);

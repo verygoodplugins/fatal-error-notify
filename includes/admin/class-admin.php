@@ -61,7 +61,11 @@ class Fatal_Error_Notify_Admin {
 
 	public function test_error() {
 
-		function_that_does_not_exist();
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( 'You do not have sufficient permissions to access this page.' );
+		}
+
+		fatal_error_notify_test_error_function();
 
 	}
 
@@ -114,15 +118,16 @@ class Fatal_Error_Notify_Admin {
 
 				<ul>
 					<li>Slack notifications</li>
+					<li>Twilio notifications</li>
 					<li>Pause notifications</li>
 					<li>Out-of-memory notifications</li>
-					<li>Stealth mode</li>
 				</ul>
 
 				<ul>
 					<li>WooCommerce error notifications</li>
 					<li>Gravity Forms error notifications</li>
 					<li>WP Fusion error notifications</li>
+					<li>SMTP error notifications</li>
 				</ul>
 
 				<a class="button-primary" href="https://fatalerrornotify.com/?utm_source=free-plugin" target="_blank">Learn More</a>
