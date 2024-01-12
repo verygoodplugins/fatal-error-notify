@@ -80,6 +80,10 @@ This is a developer's portal for Fatal Error Notify and should _not_ be used for
 
 ## Changelog ##
 
+### 1.5.3 - 1/12/2024
+* Tested for WordPress 6.5.0
+* Added nonce further secure to admin test error action
+
 ### 1.5.2 - 1/5/2024
 * Improved - Removed some uncommon error types
 * Fixed test error endpoint being accessible by non-admins
