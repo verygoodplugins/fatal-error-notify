@@ -53,7 +53,7 @@ class Fatal_Error_Notify_Admin {
 	}
 
 	/**
-	 * Creates test error button
+	 * Handles AJAX request to test error notification.
 	 *
 	 * @access public
 	 * @return void
@@ -61,8 +61,8 @@ class Fatal_Error_Notify_Admin {
 
 	public function test_error() {
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( 'You do not have sufficient permissions to access this page.' );
+		if( ! check_ajax_referer( 'fen_settings' ) ) {
+			wp_send_json_error( 'Invalid nonce' );
 		}
 
 		fatal_error_notify_test_error_function();

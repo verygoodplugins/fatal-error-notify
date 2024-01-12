@@ -2,8 +2,8 @@
 Contributors: verygoodplugins
 Tags: error, reporting, debugging, fatal
 Requires at least: 4.6
-Tested up to: 6.3.0
-Stable tag: 1.5.2
+Tested up to: 6.5.0
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,10 @@ If you are updating options that are stored as arrays (for example `levels` or `
 2. Example email received when an error has been reported
 
 == Changelog ==
+
+= 1.5.3 - 1/12/2024 =
+* Tested for WordPress 6.5.0
+* Added nonce further secure to admin test error action
 
 = 1.5.2 - 1/5/2024 =
 * Improved - Removed some uncommon error types

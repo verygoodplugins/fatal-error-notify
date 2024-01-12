@@ -6,7 +6,8 @@ jQuery(document).ready(function($){
 		$("#test-button").attr('disabled', true);
 
 		var data = {
-			'action'	: 'test_error'
+			'action'	  : 'test_error',
+			'_ajax_nonce' : $('#fen_settings_nonce').val()
 		};
 
 		$.post(ajaxurl, data);
