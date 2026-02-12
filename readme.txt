@@ -1,9 +1,10 @@
 === Fatal Error Notify ===
 Contributors: verygoodplugins
-Tags: error, reporting, debugging, fatal
-Requires at least: 4.6
-Tested up to: 6.5.0
-Stable tag: 1.5.3
+Tags: error, reporting, debugging, fatal, notification
+Requires at least: 5.0
+Tested up to: 6.9
+Requires PHP: 7.4
+Stable tag: 1.5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,7 +44,7 @@ Fatal Error Notify Pro also includes integrations with Gravity Forms, WooCommerc
 
 = Can I exclude specific errors? =
 
-Yes, you can use the filter `fen_ingore_error`, like so:
+Yes, you can use the filter `fen_ignore_error`, like so:
 
 	function fen_ignore_error( $ignore, $error ) {
 
@@ -90,6 +91,23 @@ If you are updating options that are stored as arrays (for example `levels` or `
 2. Example email received when an error has been reported
 
 == Changelog ==
+
+= 1.5.4 - 2/12/2026 =
+* Tested for WordPress 6.9
+* Added - Memory reservation for better out-of-memory error handling
+* Added - Settings link on the plugins page
+* Added - Automatically deactivate the free version when Pro is activated
+* Added - Object cache support for rate limiting
+* Added - `fen_rate_limit_time` filter for customizing the rate limit duration
+* Improved - Notifications now include the full request URL with protocol and domain
+* Improved - Server paths are now stripped from file paths in notifications
+* Improved - Out-of-memory error messages are normalized to prevent duplicate notifications
+* Improved - "chmod" warnings are now ignored by default
+* Improved - Better referrer handling (hidden when same as request URL)
+* Improved - User login name is now shown instead of just the user ID
+* Improved - Test notifications no longer call an undefined function
+* Fixed - Deprecated constant `E_STRICT` removed for PHP 8.4 compatibility
+* Fixed - Rate limiting now properly includes the file path in the hash
 
 = 1.5.3 - 1/12/2024 =
 * Tested for WordPress 6.5.0
