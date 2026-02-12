@@ -212,9 +212,15 @@ class Fatal_Error_Notify_Public {
 
 		$message = isset( $error['message'] ) ? $error['message'] : '';
 
-		$output  = '<ul>';
-		$output .= '<li><strong>Error Level:</strong> ' . fatal_error_notify()->map_error_code_to_type( $error['type'] ) . '</li>';
-		$output .= '<li><strong>Message:</strong> ' . nl2br( esc_html( $message ) ) . '</li>';
+			$output  = '<ul>';
+			$error_type = fatal_error_notify()->map_error_code_to_type( $error['type'] );
+
+			if ( empty( $error_type ) ) {
+				$error_type = 'Unknown (' . (int) $error['type'] . ')';
+			}
+
+			$output .= '<li><strong>Error Level:</strong> ' . esc_html( $error_type ) . '</li>';
+			$output .= '<li><strong>Message:</strong> ' . nl2br( esc_html( $message ) ) . '</li>';
 
 		if ( isset( $error['file'] ) ) {
 			$output .= '<li><strong>File:</strong> ' . esc_html( $error['file'] ) . '</li>';
