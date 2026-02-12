@@ -49,15 +49,15 @@ class Fatal_Error_Notify_Public {
 		if ( ! isset( $_SERVER['HTTP_HOST'] ) && ! isset( $_SERVER['SERVER_NAME'] ) ) {
 
 			if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-				return $_SERVER['REQUEST_URI'];
+				return sanitize_text_field( $_SERVER['REQUEST_URI'] );
 			}
 
 			return 'unknown';
 		}
 
 		$protocol = isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-		$host     = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
-		$uri      = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '/';
+		$host     = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( $_SERVER['HTTP_HOST'] ) : sanitize_text_field( $_SERVER['SERVER_NAME'] );
+		$uri      = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( $_SERVER['REQUEST_URI'] ) : '/';
 
 		return $protocol . $host . $uri;
 	}
@@ -75,7 +75,11 @@ class Fatal_Error_Notify_Public {
 			return false;
 		}
 
-		$referrer = $_SERVER['HTTP_REFERER'];
+		$referrer = esc_url_raw( $_SERVER['HTTP_REFERER'] );
+
+		if ( empty( $referrer ) ) {
+			return false;
+		}
 
 		// Don't show referrer if it's the same as the request.
 		if ( $referrer === $this->get_full_request_url() ) {
@@ -239,18 +243,17 @@ class Fatal_Error_Notify_Public {
 
 		$output .= '<br /><em>(Pause notifications, mute plugins, and more in <a href="https://fatalerrornotify.com/?utm_source=free-plugin&utm_medium=notification">Fatal Error Notify Pro</a>)</em><br />';
 
-			if ( function_exists( 'wp_mail' ) && apply_filters( 'fen_use_wp_mail', true ) ) {
+		if ( function_exists( 'wp_mail' ) && apply_filters( 'fen_use_wp_mail', true ) ) {
 
-				add_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
-				wp_mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output );
-				remove_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
+			add_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
+			wp_mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output );
+			remove_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
 
-			} else {
+		} else {
 
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type:text/html;charset=UTF-8' . "\r\n";
 			mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output, $headers );
-
 		}
 	}
 }

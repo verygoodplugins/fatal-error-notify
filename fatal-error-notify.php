@@ -204,7 +204,7 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 		 *
 		 * @param string $plugin The plugin being activated.
 		 */
-		public function maybe_auto_deactivate( $plugin, $network_wide ) {
+		public function maybe_auto_deactivate( $plugin, $network_wide = false ) {
 
 			if ( 'fatal-error-notify-pro/fatal-error-notify-pro.php' === $plugin ) {
 				deactivate_plugins( FATAL_ERROR_NOTIFY_PLUGIN_PATH, false, $network_wide );
