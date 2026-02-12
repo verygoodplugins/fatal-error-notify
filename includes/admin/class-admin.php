@@ -74,8 +74,20 @@ class Fatal_Error_Notify_Admin {
 
 		if ( empty( $settings['notification_email'] ) ) {
 			$settings['notification_email'] = get_option( 'admin_email' );
-			update_option( 'vgp_fen_settings', $settings );
 		}
+
+		// Ensure levels are set so the public handler doesn't bail out.
+		if ( empty( $settings['levels'] ) || ! is_array( $settings['levels'] ) ) {
+			$settings['levels'] = array(
+				E_ERROR => true,
+			);
+		}
+
+		if ( empty( $settings['levels'][ E_ERROR ] ) ) {
+			$settings['levels'][ E_ERROR ] = true;
+		}
+
+		update_option( 'vgp_fen_settings', $settings );
 
 		// Build a test error and trigger a notification.
 		$error = array(

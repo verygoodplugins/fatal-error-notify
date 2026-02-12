@@ -239,12 +239,13 @@ class Fatal_Error_Notify_Public {
 
 		$output .= '<br /><em>(Pause notifications, mute plugins, and more in <a href="https://fatalerrornotify.com/?utm_source=free-plugin&utm_medium=notification">Fatal Error Notify Pro</a>)</em><br />';
 
-		if ( function_exists( 'wp_mail' ) && apply_filters( 'fen_use_wp_mail', true ) ) {
+			if ( function_exists( 'wp_mail' ) && apply_filters( 'fen_use_wp_mail', true ) ) {
 
-			add_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
-			wp_mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output );
+				add_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
+				wp_mail( $settings['notification_email'], 'Error notification for ' . get_home_url(), $output );
+				remove_filter( 'wp_mail_content_type', array( $this, 'wp_mail_content_type' ) );
 
-		} else {
+			} else {
 
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type:text/html;charset=UTF-8' . "\r\n";

@@ -74,7 +74,7 @@ This will download the latest copy of Fatal Error Notify.
 
 ## Bugs
 
-If you find an issue, let us know [here](https://github.com/verygoodplugins/fatal-error-notify/issues?state=open)!
+If you find an issue, please [open a GitHub issue](https://github.com/verygoodplugins/fatal-error-notify/issues?state=open)!
 
 ## How can I report security bugs?
 

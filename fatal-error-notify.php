@@ -101,7 +101,7 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 				add_filter( 'plugin_action_links_' . FATAL_ERROR_NOTIFY_PLUGIN_PATH, array( self::$instance, 'add_action_links' ) );
 
 				// Auto-deactivate when Pro is active.
-				add_action( 'activated_plugin', array( self::$instance, 'maybe_auto_deactivate' ) );
+				add_action( 'activated_plugin', array( self::$instance, 'maybe_auto_deactivate' ), 10, 2 );
 
 			}
 
@@ -204,10 +204,10 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 		 *
 		 * @param string $plugin The plugin being activated.
 		 */
-		public function maybe_auto_deactivate( $plugin ) {
+		public function maybe_auto_deactivate( $plugin, $network_wide ) {
 
 			if ( 'fatal-error-notify-pro/fatal-error-notify-pro.php' === $plugin ) {
-				deactivate_plugins( FATAL_ERROR_NOTIFY_PLUGIN_PATH );
+				deactivate_plugins( FATAL_ERROR_NOTIFY_PLUGIN_PATH, false, $network_wide );
 			}
 		}
 
