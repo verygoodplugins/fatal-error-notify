@@ -249,8 +249,11 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 					return 'E_DEPRECATED';
 				case E_USER_DEPRECATED: // 16384 //
 					return 'E_USER_DEPRECATED';
+				default:
+					return 'Unknown (' . (int) $code . ')';
 			}
 
+			return 'Unknown';
 		}
 
 
