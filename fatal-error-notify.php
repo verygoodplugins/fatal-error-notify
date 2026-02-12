@@ -190,7 +190,7 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 		 */
 		public function add_action_links( $links ) {
 
-			$links[] = '<a href="' . admin_url( 'options-general.php?page=fatal-error-notify' ) . '">' . __( 'Settings', 'fatal-error-notify' ) . '</a>';
+			$links[] = '<a href="' . esc_url( admin_url( 'options-general.php?page=fatal-error-notify' ) ) . '">' . esc_html__( 'Settings', 'fatal-error-notify' ) . '</a>';
 
 			return $links;
 		}

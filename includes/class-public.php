@@ -15,13 +15,17 @@ class Fatal_Error_Notify_Public {
 	 *
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct( $register_hooks = true ) {
 
-		// Gives us a little buffer in case we run out of memory.
-		$this->memory = str_repeat( '*', 1024 * 256 );
+		$this->memory = '';
 
-		// 1 so it runs before any plugins potentially generate warnings during shutdown after a fatal error.
-		add_action( 'shutdown', array( $this, 'shutdown' ), 1 );
+		if ( $register_hooks ) {
+			// Gives us a little buffer in case we run out of memory.
+			$this->memory = str_repeat( '*', 1024 * 256 );
+
+			// 1 so it runs before any plugins potentially generate warnings during shutdown after a fatal error.
+			add_action( 'shutdown', array( $this, 'shutdown' ), 1 );
+		}
 	}
 
 	/**
@@ -202,13 +206,15 @@ class Fatal_Error_Notify_Public {
 
 		// Build the notification output.
 
+		$message = isset( $error['message'] ) ? $error['message'] : '';
+
 		$output  = '<ul>';
 		$output .= '<li><strong>Error Level:</strong> ' . fatal_error_notify()->map_error_code_to_type( $error['type'] ) . '</li>';
-		$output .= '<li><strong>Message:</strong> ' . nl2br( $error['message'] ) . '</li>';
+		$output .= '<li><strong>Message:</strong> ' . nl2br( esc_html( $message ) ) . '</li>';
 
 		if ( isset( $error['file'] ) ) {
 			$output .= '<li><strong>File:</strong> ' . esc_html( $error['file'] ) . '</li>';
-			$output .= '<li><strong>Line:</strong> ' . $error['line'] . '</li>';
+			$output .= '<li><strong>Line:</strong> ' . (int) $error['line'] . '</li>';
 		}
 
 		$output .= '<li><strong>URL:</strong> ' . esc_html( $this->get_full_request_url() ) . '</li>';

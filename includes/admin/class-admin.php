@@ -61,8 +61,12 @@ class Fatal_Error_Notify_Admin {
 
 	public function test_error() {
 
-		if ( ! check_ajax_referer( 'fen_settings' ) || ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( 'Invalid nonce' );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'Unauthorized', 403 );
+		}
+
+		if ( ! check_ajax_referer( 'fen_settings', '_ajax_nonce', false ) ) {
+			wp_send_json_error( 'Invalid nonce', 403 );
 		}
 
 		// Set the default email in case it's empty.
@@ -83,7 +87,7 @@ class Fatal_Error_Notify_Admin {
 		);
 
 		// Send test notification through the public handler.
-		$public = new Fatal_Error_Notify_Public();
+		$public = new Fatal_Error_Notify_Public( false );
 		$public->handle_error( $error );
 
 		wp_send_json_success();
