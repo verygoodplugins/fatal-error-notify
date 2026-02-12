@@ -1,5 +1,6 @@
 ![Fatal Error Notify](https://fatalerrornotify.com/wp-content/uploads/2017/12/icon_color-150x150.png)
-# Fatal Error Notify #
+
+# Fatal Error Notify
 
 Receive email notifications whenever a fatal error occurs on your WordPress site.
 
@@ -13,7 +14,6 @@ Unlike traditional uptime monitoring services, which will only notify you if you
 
 Automatic plugin and theme updates often introduce problems that you aren't aware of until they're reported by your visitors. Fatal Error Notify lets you address these issues as they occur and before they cause significant problems.
 
-
 ### What's in the Pro version?
 
 [Fatal Error Notify Pro](https://fatalerrornotify.com/) includes several additional features, like Slack notifications, the ability to hide the plugin settings, logging of recorded errors, out of memory handling, multisite support, and more.
@@ -22,16 +22,16 @@ Fatal Error Notify Pro also includes integrations with Gravity Forms, WooCommerc
 
 ### Can I exclude specific errors?
 
-Yes, you can use the filter `fen_ingore_error`, like so:
+Yes, you can use the filter `fen_ignore_error`, like so:
 
 ```php
 function fen_ignore_error( $ignore, $error ) {
 
-	if( $error['file'] == '/home/username/public_html/wp-includes/class-phpass.php' ) {
-		$ignore = true;
-	}
+ if( $error['file'] == '/home/username/public_html/wp-includes/class-phpass.php' ) {
+  $ignore = true;
+ }
 
-	return $ignore;
+ return $ignore;
 
 }
 
@@ -40,10 +40,10 @@ add_filter( 'fen_ignore_error', 'fen_ignore_error', 10, 2 );
 
 The `$error` variable is an array containing:
 
-* `$error['type']`: (int) The PHP [error code](http://php.net/manual/en/errorfunc.constants.php)
-* `$error['message']`: (string) The error message
-* `$error['file']`: (string) The path to the file that triggered the error
-* `$error['line']`: (int) The line number that triggered the error
+- `$error['type']`: (int) The PHP [error code](http://php.net/manual/en/errorfunc.constants.php)
+- `$error['message']`: (string) The error message
+- `$error['file']`: (string) The path to the file that triggered the error
+- `$error['line']`: (int) The line number that triggered the error
 
 ### Does it support WP CLI
 
@@ -51,94 +51,134 @@ Yup, you bet! You can update the plugin settings using WP CLI, for example to se
 
 The two methods are `get_option` and `update_option`. For example:
 
-```wp fatal-error-notify get_option slack_notifications```
+`wp fatal-error-notify get_option slack_notifications`
 
 Will tell you if Slack notifications are enabled on the site.
 
-```wp fatal-error-notify update_option notification_email email@domain.com```
+`wp fatal-error-notify update_option notification_email email@domain.com`
 
 Will update the notification email for the site.
 
 You can also update options on multiple sites using xargs:
 
-```wp site list --field=url | xargs -n1 -I {} sh -c 'wp --url={} fatal-error-notify update_option notification_email email@domain.com'```
+`wp site list --field=url | xargs -n1 -I {} sh -c 'wp --url={} fatal-error-notify update_option notification_email email@domain.com'`
 
 If you are updating options that are stored as arrays (for example `levels` or `plugins`) you can use JSON-formatted values. For an example, use `get_option` first on the field you are trying to update.
 
-## Installation ##
+## Installation
 
 1. You can clone the GitHub repository: `https://github.com/verygoodplugins/fatal-error-notify.git`
 2. Or download it directly as a ZIP file: `https://github.com/verygoodplugins/fatal-error-notify/archive/master.zip`
 
 This will download the latest copy of Fatal Error Notify.
 
-## Bugs ##
-If you find an issue, let us know [here](https://github.com/verygoodplugins/fatal-error-notify/issues?state=open)!
+## Bugs
 
-## Support ##
+If you find an issue, please [open a GitHub issue](https://github.com/verygoodplugins/fatal-error-notify/issues?state=open)!
+
+## How can I report security bugs?
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/fatal-error-notify)
+
+## Support
+
 This is a developer's portal for Fatal Error Notify and should _not_ be used for support. Please visit the [support page](https://fatalerrornotify.com/support/contact/) if you need to submit a support request.
 
-## Changelog ##
+## Changelog
+
+### 1.5.4 - 2/12/2026
+
+- Tested for WordPress 6.9
+- Added - Memory reservation for better out-of-memory error handling
+- Added - Settings link on the plugins page
+- Added - Automatically deactivate the free version when Pro is activated
+- Added - Object cache support for rate limiting
+- Added - `fen_rate_limit_time` filter for customizing the rate limit duration
+- Improved - Notifications now include the full request URL with protocol and domain
+- Improved - Server paths are now stripped from file paths in notifications
+- Improved - Out-of-memory error messages are normalized to prevent duplicate notifications
+- Improved - "chmod" warnings are now ignored by default
+- Improved - Better referrer handling (hidden when same as request URL)
+- Improved - User login name is now shown instead of just the user ID
+- Improved - Test notifications no longer call an undefined function
+- Fixed - Deprecated constant `E_STRICT` removed for PHP 8.4 compatibility
+- Fixed - Rate limiting now properly includes the file path in the hash
 
 ### 1.5.3 - 1/12/2024
-* Tested for WordPress 6.5.0
-* Added nonce further secure to admin test error action
+
+- Tested for WordPress 6.5.0
+- Added nonce further secure to admin test error action
 
 ### 1.5.2 - 1/5/2024
-* Improved - Removed some uncommon error types
-* Fixed test error endpoint being accessible by non-admins
+
+- Improved - Removed some uncommon error types
+- Fixed test error endpoint being accessible by non-admins
 
 ### 1.5.1 - 8/11/2023
-* Tested for WordPress 6.3.0
-* Improved - "mkdir" warnings will be ignored by default
+
+- Tested for WordPress 6.3.0
+- Improved - "mkdir" warnings will be ignored by default
 
 #### 1.5.0 - 3/20/2023
-* Tested for WordPress 6.2.0
-* Added [WP CLI endpoint](https://fatalerrornotify.com/documentation/#wp-cli) for updating plugin settings
+
+- Tested for WordPress 6.2.0
+- Added [WP CLI endpoint](https://fatalerrornotify.com/documentation/#wp-cli) for updating plugin settings
 
 #### 1.4.7 - 11/14/2022
-* Fixed typo (misplaced parenthesis) checking `WARNING` level errors in v1.4.6
+
+- Fixed typo (misplaced parenthesis) checking `WARNING` level errors in v1.4.6
 
 #### 1.4.6 - 11/1/2022
-* Tested for WordPress 6.1.0
-* Improved - Moved actions to `shutdown` action priority 1, to fix cases where other plugins generate notices or warnings during `shutdown` after a fatal error
-* Improved - "rmdir" warnings will be ignored by default
-* Fixed `unlink` warnings still triggering notifications if `unlink` was the first part of the error string
+
+- Tested for WordPress 6.1.0
+- Improved - Moved actions to `shutdown` action priority 1, to fix cases where other plugins generate notices or warnings during `shutdown` after a fatal error
+- Improved - "rmdir" warnings will be ignored by default
+- Fixed `unlink` warnings still triggering notifications if `unlink` was the first part of the error string
 
 #### 1.4.5 - 2/15/2022
-* Tested for WordPress 5.9
-* Improved - "unlink" warnings will be ignored by default (see https://wordpress.org/support/topic/wordfence-notification-error-wordfenceclass-php/#post-15187940)
-* Added upgrade prompt in notification email
+
+- Tested for WordPress 5.9
+- Improved - "unlink" warnings will be ignored by default (see <https://wordpress.org/support/topic/wordfence-notification-error-wordfenceclass-php/#post-15187940>)
+- Added upgrade prompt in notification email
 
 #### 1.4.4 - 8/3/2021
-* Tested for WordPress 5.8
-* Moved upgrade nag to top of settings page to prevent layout issues on smaller screens
+
+- Tested for WordPress 5.8
+- Moved upgrade nag to top of settings page to prevent layout issues on smaller screens
 
 #### 1.4.3 - 12/16/2020
-* Tested for WordPress 5.6
-* Fixed PHP notice when HTTP referrer was missing
-* Added fen_use_wp_mail filter
+
+- Tested for WordPress 5.6
+- Fixed PHP notice when HTTP referrer was missing
+- Added fen_use_wp_mail filter
 
 #### 1.4.2 - 4/3/2020
-* Tested for WordPress 5.4
-* Added error level descriptions
+
+- Tested for WordPress 5.4
+- Added error level descriptions
 
 #### 1.4.1 - 11/27/2019
-* Tested for WordPress 5.3
+
+- Tested for WordPress 5.3
 
 #### 1.4 - 4/26/2019
-* Added request URI, HTTP Referrer, and current user ID to notifications
+
+- Added request URI, HTTP Referrer, and current user ID to notifications
 
 #### 1.3 - 4/21/2018
-* Added "Send Test" button
-* Rate limiting so notifications are only sent once per hour
+
+- Added "Send Test" button
+- Rate limiting so notifications are only sent once per hour
 
 #### 1.2 - 2/8/2018
-* Added filter to ignore errors
+
+- Added filter to ignore errors
 
 #### 1.1
-* Updated branding
-* Added link to Pro version
+
+- Updated branding
+- Added link to Pro version
 
 #### 1.0
-* Initial release
+
+- Initial release

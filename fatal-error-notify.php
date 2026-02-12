@@ -4,7 +4,9 @@
  * Plugin Name: Fatal Error Notify
  * Description: Receive email notifications when errors occur on your WordPress site.
  * Plugin URI: https://fatalerrornotify.com/
- * Version: 1.5.3
+ * Version: 1.5.4
+ * Requires PHP: 7.4
+ * Requires at least: 5.0
  * Author: Very Good Plugins
  * Author URI: https://verygoodplugins.com/
  * Text Domain: fatal-error-notify
@@ -35,7 +37,9 @@ if ( ! function_exists( 'add_action' ) ) {
 	exit();
 }
 
-define( 'FATAL_ERROR_NOTIFY_VERSION', '1.5.3' );
+if ( ! defined( 'FATAL_ERROR_NOTIFY_VERSION' ) ) {
+	define( 'FATAL_ERROR_NOTIFY_VERSION', '1.5.4' );
+}
 
 if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 
@@ -68,7 +72,6 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 			E_NOTICE,
 			E_USER_ERROR,
 			E_USER_WARNING,
-			E_STRICT,
 			E_DEPRECATED,
 		);
 
@@ -94,6 +97,11 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 				self::$instance->includes();
 
 				self::$instance->admin = new Fatal_Error_Notify_Admin();
+
+				add_filter( 'plugin_action_links_' . FATAL_ERROR_NOTIFY_PLUGIN_PATH, array( self::$instance, 'add_action_links' ) );
+
+				// Auto-deactivate when Pro is active.
+				add_action( 'activated_plugin', array( self::$instance, 'maybe_auto_deactivate' ), 10, 2 );
 
 			}
 
@@ -174,6 +182,42 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 		 * @return void
 		 */
 
+		/**
+		 * Add settings link to plugin page.
+		 *
+		 * @since 1.5.4
+		 *
+		 * @param array $links Plugin action links.
+		 * @return array Modified links.
+		 */
+		public function add_action_links( $links ) {
+
+			$links[] = '<a href="' . esc_url( admin_url( 'options-general.php?page=fatal-error-notify' ) ) . '">' . esc_html__( 'Settings', 'fatal-error-notify' ) . '</a>';
+
+			return $links;
+		}
+
+		/**
+		 * Auto-deactivate this plugin when the Pro version is activated.
+		 *
+		 * @since 1.5.4
+		 *
+		 * @param string $plugin The plugin being activated.
+		 */
+		public function maybe_auto_deactivate( $plugin, $network_wide = false ) {
+
+			if ( 'fatal-error-notify-pro/fatal-error-notify-pro.php' === $plugin ) {
+				deactivate_plugins( FATAL_ERROR_NOTIFY_PLUGIN_PATH, false, $network_wide );
+			}
+		}
+
+		/**
+		 * Map error code to error string
+		 *
+		 * @param int $code The error code.
+		 * @return string The error type string.
+		 */
+
 		public function map_error_code_to_type( $code ) {
 
 			switch ( $code ) {
@@ -199,16 +243,17 @@ if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 					return 'E_USER_WARNING';
 				case E_USER_NOTICE: // 1024 //
 					return 'E_USER_NOTICE';
-				case E_STRICT: // 2048 //
-					return 'E_STRICT';
 				case E_RECOVERABLE_ERROR: // 4096 //
 					return 'E_RECOVERABLE_ERROR';
 				case E_DEPRECATED: // 8192 //
 					return 'E_DEPRECATED';
 				case E_USER_DEPRECATED: // 16384 //
 					return 'E_USER_DEPRECATED';
+				default:
+					return 'Unknown (' . (int) $code . ')';
 			}
 
+			return 'Unknown';
 		}
 
 
