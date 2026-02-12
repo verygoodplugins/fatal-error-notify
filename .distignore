@@ -1,0 +1,13 @@
+/.wordpress-org
+/.git
+/.github
+/node_modules
+
+.distignore
+.gitignore
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+*.codekit
+*.code-workspace
+composer.json
