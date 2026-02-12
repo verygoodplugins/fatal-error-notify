@@ -37,7 +37,9 @@ if ( ! function_exists( 'add_action' ) ) {
 	exit();
 }
 
-define( 'FATAL_ERROR_NOTIFY_VERSION', '1.5.4' );
+if ( ! defined( 'FATAL_ERROR_NOTIFY_VERSION' ) ) {
+	define( 'FATAL_ERROR_NOTIFY_VERSION', '1.5.4' );
+}
 
 if ( ! class_exists( 'Fatal_Error_Notify' ) ) {
 
