@@ -127,6 +127,13 @@ class Fatal_Error_Notify_Public {
 			return;
 		}
 
+		if ( E_WARNING === $error['type'] && false !== strpos( $error['message'], 'exif_read_data(' ) ) {
+			// exif_read_data() emits E_WARNING for malformed image EXIF metadata
+			// (e.g. "Incorrect APP1 Exif Identifier Code", "IFD data bad offset").
+			// These are third-party image data issues, not site code errors.
+			return;
+		}
+
 		// Normalize out-of-memory messages to prevent duplicate notifications
 		// when only the allocation size differs.
 		if ( 0 === strpos( $error['message'], 'Allowed memory' ) ) {
